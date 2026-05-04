@@ -1,0 +1,590 @@
+================================================================================
+EXPERT 11: MOTION BLUR PRESETS - COMPREHENSIVE TECHNICAL GUIDE
+Panchatantra Animation Production - Phase 2
+================================================================================
+
+DOCUMENT PURPOSE:
+Detailed specifications for all 5 motion blur presets with rendering 
+parameters, performance targets, and scene application guidelines.
+
+MASTER BLUR SPECIFICATIONS:
+- Format: Shader-based or pre-rendered sprite trails
+- Resolution: Full 1920x1080p support
+- Color space: RGBA 32-bit linear
+- Framerate: 30fps locked
+- Quality: 2-pass rendering (forward + bloom pass)
+
+================================================================================
+PRESET 1: SUBTLE BLUR (Gentle Movement)
+================================================================================
+
+TRIGGER CONDITION:
+- Velocity range: 30-50 pixels/frame
+- Use case: Walking animation, gentle movement, casual dialogue scenes
+- Intensity level: 0 (lowest)
+- Visibility: Barely noticeable to casual observer
+
+BLUR SPECIFICATIONS:
+
+Blur Radius:
+- Base radius: 3-5 pixels
+- Minimum: 3 pixels
+- Maximum: 5 pixels
+- Adaptive scaling: No (fixed width)
+
+Blur Direction:
+- Direction type: Motion vector aligned
+- Angle precision: Calculated from velocity vector
+- Coverage: -90 to +90 degrees from motion direction
+- Spread factor: 0 (no radial spread)
+
+Blur Samples:
+- Sample count: 4 samples
+- Sample distribution: Linear distribution along blur direction
+- Spacing: 1.25 pixels apart (3-pixel radius / 4 samples)
+- Interpolation: Linear color interpolation between samples
+
+Opacity & Visibility:
+- Base opacity: 0.15-0.25
+- Alpha blending: 0.2x opacity multiplier on blur layer
+- Perceptibility: Very subtle, requires focus to notice
+
+Color Treatment:
+- Source color: Native object color
+- Saturation: -20% reduction (desaturated to 80% saturation)
+- Brightness: -10% reduction (slightly darkened)
+- Color blend: Linear interpolation toward gray
+
+Blend Mode:
+- Primary blend: Screen (additive blending)
+- Opacity: 0.2x in Screen mode
+- Alternative: Normal blend at 0.15x opacity
+- Layer order: Above object, subtle enhancement
+
+Rendering Approach:
+- Method: Shader-based (preferred) or sprite trail
+- Performance cost: <1ms CPU, <0.5ms GPU
+- Quality: Real-time calculation preferred
+
+FRAME DURATION:
+- Effect duration: 16-33 milliseconds (0.5-1 frame @ 30fps)
+- Decay curve: Linear fade to zero over duration
+- Persistence: Blur persists only during active motion
+- Reactivation: Immediate if velocity continues
+
+PERFORMANCE PROFILE:
+- CPU cost: 0.3ms per frame
+- GPU cost: 0.2ms per frame
+- Memory: Minimal (no persistent buffers)
+- Frame rate impact: <5% of total budget
+
+APPLICATION GUIDELINES:
+- Scene type: Calm, slow-paced scenes
+- Light conditions: Works in all lighting conditions
+- Visibility: Subtle enough for dialogue scenes
+- Performance: Minimal cost, can be always-on
+
+EXAMPLE APPLICATION:
+Scene: Opening narration with character walking
+Velocity: 35 pixels/frame
+Blur radius: 4 pixels
+Duration: Walking entire 30-second scene
+Effect subtlety: Very low, reinforces natural motion
+
+================================================================================
+PRESET 2: MODERATE BLUR (Standard Movement)
+================================================================================
+
+TRIGGER CONDITION:
+- Velocity range: 80-150 pixels/frame
+- Use case: Running, combat movement, chasing sequences
+- Intensity level: 1 (medium)
+- Visibility: Clearly visible but not overwhelming
+
+BLUR SPECIFICATIONS:
+
+Blur Radius:
+- Base radius: 8-12 pixels
+- Minimum: 8 pixels
+- Maximum: 12 pixels
+- Adaptive scaling: Scale with velocity magnitude (±20% variance)
+
+Blur Direction:
+- Direction type: Motion vector aligned with 45-degree spread
+- Angle precision: Primary direction ±22.5 degrees
+- Coverage: Cone-shaped spread pattern
+- Spread factor: 45 degrees total spread (±22.5 degrees)
+
+Blur Samples:
+- Sample count: 8 samples (high quality)
+- Sample distribution: Non-uniform (weighted toward center)
+- Spacing: 1.5 pixels apart on average
+- Interpolation: Weighted Gaussian interpolation
+
+Opacity & Visibility:
+- Base opacity: 0.30-0.45
+- Alpha blending: 0.35x opacity multiplier
+- Perceptibility: Clearly visible, draws attention to movement
+
+Color Treatment:
+- Source color: Native object color
+- Saturation: 0% (full saturation maintained)
+- Brightness: 0% (no brightness change)
+- Color accuracy: Preserves original colors
+
+Blend Mode (Layered):
+- Primary blend: Normal at 0.35x opacity
+- Secondary blend: Screen at 0.1x opacity (layered)
+- Combined effect: Subtle glow with motion blur
+- Layer order: Blur layer → Glow overlay
+
+Rendering Approach:
+- Method: Shader-based motion blur
+- Performance cost: <3ms CPU, <2ms GPU
+- Quality: High-quality multi-sample blur
+
+FRAME DURATION:
+- Effect duration: 33-66 milliseconds (1-2 frames @ 30fps)
+- Decay curve: Ease-out curve for smooth fade
+- Persistence: Remains while velocity > threshold
+- Reactivation: Quick response to new motion
+
+PERFORMANCE PROFILE:
+- CPU cost: 1.2ms per frame
+- GPU cost: 1.5ms per frame
+- Memory: Temporary texture buffer (~4MB at 1080p)
+- Frame rate impact: ~18% of total budget
+
+APPLICATION GUIDELINES:
+- Scene type: Action sequences, combat, chasing
+- Light conditions: Adapts to lighting (color-preserving)
+- Visibility: Appropriate for dynamic scenes
+- Performance: Acceptable cost, use selectively in heavy scenes
+
+PARAMETER TUNING TABLE:
+Character type        Velocity range    Blur radius    Opacity
+Small animal          80-120 px/frame   8 pixels       0.35x
+Large animal          70-100 px/frame   10 pixels      0.40x
+Human character       100-150 px/frame  10 pixels      0.40x
+Fast creature         120-150 px/frame  12 pixels      0.45x
+
+EXAMPLE APPLICATION:
+Scene: Rabbit running from lion (Chase sequence)
+Velocity: 110 pixels/frame
+Blur radius: 10 pixels
+Duration: Running period (5-10 seconds)
+Effect prominence: Clearly visible, reinforces urgency
+
+================================================================================
+PRESET 3: EXTREME BLUR (High-Speed Action)
+================================================================================
+
+TRIGGER CONDITION:
+- Velocity range: 200+ pixels/frame
+- Use case: High-speed chases, magical effects, dramatic moments
+- Intensity level: 2 (high/extreme)
+- Visibility: Very prominent, dominates visual
+
+BLUR SPECIFICATIONS:
+
+Blur Radius:
+- Base radius: 18-28 pixels
+- Minimum: 18 pixels
+- Maximum: 28 pixels
+- Adaptive scaling: Scales with velocity magnitude (±30% variance)
+
+Blur Direction:
+- Direction type: Full 360-degree radial spread
+- Angle precision: Omnidirectional burst pattern
+- Coverage: Full sphere around object
+- Spread factor: 360 degrees (complete coverage)
+
+Blur Samples:
+- Sample count: 16 samples (very high quality)
+- Sample distribution: Radial uniform distribution
+- Spacing: 1.75 pixels average
+- Interpolation: High-quality Catmull-Rom interpolation
+
+Opacity & Visibility:
+- Base opacity: 0.50-0.70
+- Alpha blending: 0.60x opacity multiplier
+- Perceptibility: Extremely prominent, visual focal point
+
+Color Treatment:
+- Source color: Native object color
+- Saturation: -40% desaturation (60% saturation)
+- Brightness: -20% reduction (darker, muted tones)
+- Color effect: Desaturated, muted appearance
+
+Blend Mode:
+- Primary blend: Screen at 0.4x opacity (strong glow)
+- Secondary blend: Additive at 0.2x opacity
+- Combined effect: Bright glowing motion blur
+- Layer order: Base glow → Blur layer → Color highlights
+
+Special Effects:
+- White highlight streak: Directional indicator of motion
+- Streak opacity: 0.3x opacity at blur direction
+- Streak color: #FFFFFF (white) for visibility
+- Streak length: Full blur radius extension
+
+Rendering Approach:
+- Method: Multi-pass shader rendering
+- Performance cost: <6ms CPU, <5ms GPU
+- Quality: Highest quality blur implementation
+
+FRAME DURATION:
+- Effect duration: 66-100 milliseconds (2-3 frames @ 30fps)
+- Decay curve: Rapid ease-out curve
+- Persistence: Remains for extended action sequences
+- Reactivation: Smooth transition to/from active state
+
+PERFORMANCE PROFILE:
+- CPU cost: 2.5ms per frame
+- GPU cost: 3.5ms per frame
+- Memory: Persistent texture buffer (~8MB at 1080p)
+- Frame rate impact: ~40% of total budget (high cost)
+
+OPTIMIZATION NOTES:
+- Use selectively (only during high-speed moments)
+- Consider reducing on mobile devices
+- Can disable on lower-end platforms
+- Batch with other high-performance effects carefully
+
+APPLICATION GUIDELINES:
+- Scene type: Critical action moments, magical sequences
+- Light conditions: Works best in varied lighting
+- Visibility: Dominates screen, clears non-essential details
+- Performance: Expensive - reserve for important moments
+
+PARAMETER TUNING TABLE:
+Scenario                  Velocity    Blur radius  Desaturation
+Creature charge           250 px/f    20 pixels    -30%
+Magical escape            300 px/f    24 pixels    -40%
+Climactic chase           280 px/f    22 pixels    -35%
+Transformation effect     320 px/f    28 pixels    -40%
+
+EXAMPLE APPLICATION:
+Scene: Lion charges at climactic moment (Finale)
+Velocity: 280 pixels/frame
+Blur radius: 22 pixels
+Duration: 1-2 seconds charge
+Effect intensity: Maximum, visual dominance desired
+
+================================================================================
+PRESET 4: DEPTH-BASED BLUR (Tiered Depth Perception)
+================================================================================
+
+TRIGGER CONDITION:
+- Velocity range: 80-200 pixels/frame (all movement speeds)
+- Use case: Scene depth enhancement during fast motion
+- Intensity level: 1-2 (adaptive)
+- Visibility: Depth-perception focused
+
+CONCEPTUAL OVERVIEW:
+Rather than uniform blur across scene, blur varies based on depth layer:
+- Foreground objects: Preset 2 (Moderate) - most prominent motion
+- Mid-ground objects: Preset 1 (Subtle) - reduced motion clarity
+- Background objects: None (static reference frame)
+
+This creates depth perception where close objects seem to move more dynamically
+than distant objects, matching real-world motion perception.
+
+DEPTH LAYER SPECIFICATIONS:
+
+Layer 1: FOREGROUND (Close objects)
+- Z-depth: 0 to 33% of scene depth
+- Object types: Main characters, interactive elements
+- Blur preset: Moderate (Preset 2)
+- Blur radius: 8-12 pixels
+- Opacity: 0.35-0.45x
+- Sampling: 8 samples
+- Effect: Full motion blur clearly visible
+
+Layer 2: MID-GROUND (Medium distance)
+- Z-depth: 33% to 67% of scene depth
+- Object types: Secondary characters, environmental elements
+- Blur preset: Subtle (Preset 1)
+- Blur radius: 4-6 pixels
+- Opacity: 0.20-0.30x
+- Sampling: 4-6 samples
+- Effect: Reduced motion blur, less prominent
+
+Layer 3: BACKGROUND (Distant)
+- Z-depth: 67% to 100% of scene depth
+- Object types: Landscape, far terrain, sky
+- Blur preset: None
+- Blur radius: 0 pixels
+- Opacity: 0x (no blur)
+- Sampling: 0 samples
+- Effect: Static reference, no motion blur
+
+DEPTH CALCULATION:
+- Depth sort: Object Z-position relative to camera
+- Threshold calculation: Compare Z to layer boundaries
+- Interpolation: Smooth transitions between layers (±5% tolerance zone)
+- Dynamic update: Recalculate per frame for moving objects
+
+APPLICATION RULES:
+
+When object crosses depth layer boundary:
+- Fade blur parameters over 300-500ms
+- Maintain smooth visual transition
+- Blend old/new blur parameters linearly
+- Prevent jarring blur changes
+
+For multi-depth scenes:
+- Multiple objects at different depths blur independently
+- Background remains stable reference frame
+- Foreground gets strongest blur effect
+- Creates depth layering through motion perception
+
+RENDERING APPROACH:
+- Method: Conditional shader application per object
+- Processing: Single pass with depth-based conditional logic
+- Performance cost: <4ms CPU, <3ms GPU (similar to Preset 2)
+- Memory: Moderate (depth buffer + temporary texture)
+
+PERFORMANCE PROFILE:
+- CPU cost: 1.5ms per frame
+- GPU cost: 2.0ms per frame
+- Memory: ~6-8MB at 1080p
+- Frame rate impact: ~23% of total budget
+
+USE CASE EXAMPLE:
+Scene: Chase sequence through environment
+- Main character (foreground): Preset 2 blur (prominent)
+- Enemy creatures (mid-ground): Preset 1 blur (reduced)
+- Distant trees/landscape (background): No blur (static)
+- Result: Visual depth perception, realistic motion hierarchy
+
+================================================================================
+PRESET 5: ZOOM BLUR (Radial Motion from Center)
+================================================================================
+
+TRIGGER CONDITION:
+- Velocity range: N/A (not velocity-based)
+- Use case: Camera zoom in/out, focus transitions, teleportation effects
+- Intensity level: 1-2 (variable based on zoom intensity)
+- Visibility: Center-focused, radiating outward
+
+BLUR SPECIFICATIONS:
+
+Blur Origin:
+- Origin type: Center point (screen or object center)
+- Positioning: 50% X, 50% Y coordinates (screen center typical)
+- Alternative: Object center for entity-focused zoom blur
+
+Blur Direction:
+- Direction type: Radial from center point
+- Pattern: Emanating outward from center in all directions
+- Coverage: 360-degree radial field
+
+Blur Radius:
+- Base radius: 20-35 pixels
+- Minimum: 20 pixels
+- Maximum: 35 pixels
+- Adaptive scaling: Varies with zoom speed
+
+Blur Pattern:
+- Shape: Radial rays emanating from center
+- Ray count: 8-12 rays (subtle line pattern)
+- Ray spacing: Uniform angular distribution
+- Falloff: Gaussian (strong at center, fading outward)
+
+Blur Samples:
+- Sample count: 12 samples in radial pattern
+- Distribution: Radial lines from center
+- Spacing: Even angular distribution (30-45 degrees apart)
+- Interpolation: Radial linear interpolation
+
+Opacity & Visibility:
+- Base opacity: 0.40-0.60
+- Alpha blending: 0.50x opacity multiplier
+- Perceptibility: Visible but centered effect
+
+Color Treatment:
+- Source color: Native object/scene color
+- Saturation: 0% (full saturation maintained)
+- Brightness: +10% (slightly brightened for zoom effect)
+- Color effect: Warm, brightening toward center
+
+Blend Mode:
+- Primary blend: Screen at 0.35x opacity
+- Secondary blend: Additive at 0.15x opacity
+- Combined effect: Brightening radial blur
+- Special: Optional lens flare during zoom
+
+Rendering Approach:
+- Method: Shader-based radial blur
+- Performance cost: <4ms CPU, <3ms GPU
+- Quality: High-quality multi-ray zoom blur
+
+FRAME DURATION:
+- Effect duration: 50-100 milliseconds per zoom action
+- Decay curve: Linear fade to zero
+- Persistence: Only during active zoom
+- Reactivation: Immediate on new zoom trigger
+
+PERFORMANCE PROFILE:
+- CPU cost: 1.8ms per frame
+- GPU cost: 2.2ms per frame
+- Memory: Moderate texture buffer (~5MB)
+- Frame rate impact: ~32% of total budget
+
+APPLICATION SCENARIOS:
+
+Scenario 1: Camera Zoom In
+- Zoom speed: Fast (0.1-0.3 seconds)
+- Blur radius: 25 pixels
+- Opacity: 0.45x
+- Direction: Outward (blur emanates from zoom point)
+- Effect: Focus convergence visual
+
+Scenario 2: Camera Zoom Out
+- Zoom speed: Fast (0.1-0.3 seconds)
+- Blur radius: 28 pixels
+- Opacity: 0.50x
+- Direction: Inward (opposite radial direction)
+- Effect: Focus divergence visual
+
+Scenario 3: Focus Transition
+- Transition duration: 0.5-1.0 seconds
+- Blur radius: Adaptive (20-35 pixels)
+- Opacity: 0.40-0.50x
+- Direction: Radial from transition center
+- Effect: Attention redirection
+
+Scenario 4: Teleportation Effect
+- Trigger: Magical teleport moment
+- Zoom speed: Very fast (0.15-0.25 seconds)
+- Blur radius: 30-35 pixels (maximum)
+- Opacity: 0.55-0.65x
+- Secondary effect: Particles radiating outward
+- Color tint: Optional magical color (gold, pink)
+- Effect: Dramatic magical transition
+
+PARAMETER TUNING:
+Action type            Blur radius    Duration    Opacity
+Subtle zoom            22 pixels      50ms        0.40x
+Standard focus         25 pixels      75ms        0.45x
+Dramatic transition    30 pixels      100ms       0.55x
+Magical teleport       35 pixels      200ms       0.65x
+
+RENDERING OPTIMIZATION:
+- Fullscreen quad rendering (efficient)
+- Single-pass radial calculation
+- No per-object processing required
+- Can be applied post-render (deferred)
+
+USE CASE EXAMPLE:
+Scene: Magical creature appearance (Finale - Scene 5)
+- Trigger: Lion magically transforms/appears
+- Effect type: Zoom blur + teleportation
+- Blur radius: 32 pixels
+- Duration: 300ms total
+- Color tint: Gold overlay (magical effect)
+- Result: Dramatic magical appearance moment
+
+================================================================================
+MOTION BLUR APPLICATION RULES & DECISION TREE
+================================================================================
+
+SCENE CLASSIFICATION:
+
+Scene Type: Calm/Dialogue
+→ Trigger: Off (no blur needed)
+→ Or: Preset 1 if any subtle movement
+→ CPU/GPU impact: Minimal
+
+Scene Type: Normal Movement
+→ Trigger: Character velocity > 40 px/frame
+→ Apply: Preset 1 (Subtle)
+→ Duration: While moving
+→ Fade: Linear in/out
+
+Scene Type: Active Movement
+→ Trigger: Character velocity > 100 px/frame
+→ Apply: Preset 2 (Moderate)
+→ Duration: While moving
+→ Fade: Ease-out curve
+
+Scene Type: Combat/Action
+→ Trigger: Character velocity > 150 px/frame
+→ Apply: Preset 3 (Extreme) if narrative important
+→ Apply: Preset 2 (Moderate) if performance critical
+→ Duration: Attack sequences, combo moves
+→ Fade: Rapid ease-out
+
+Scene Type: Camera Movement
+→ Trigger: Camera pan speed > 100 px/frame
+→ Apply: Preset 5 (Zoom Blur) if focus change
+→ Apply: Preset 2 (Moderate) if simple pan
+→ Duration: Entire pan duration
+→ Easing: Linear motion with ease-out deceleration
+
+Scene Type: Magical/Fantasy
+→ Trigger: Special ability activation
+→ Apply: Preset 3 (Extreme) for magical moments
+→ Duration: 3-6 frames sustained
+→ Color modification: Add tint color (gold, pink, etc.)
+→ Additional: Particle glow effect layered beneath
+
+TRANSITION RULES:
+
+When switching blur presets mid-scene:
+1. Fade old preset to zero over 100-150ms
+2. Fade new preset in over 100-150ms
+3. Overlap slightly for smooth transition (no frame where both are zero)
+4. Maintain object visibility throughout transition
+
+When velocity changes:
+1. Calculate new blur requirement continuously
+2. Smooth parameter transitions (avoid jumpy blur)
+3. Use ease curves for velocity-dependent blur scaling
+4. Respond quickly to velocity increases (< 100ms)
+
+================================================================================
+MOTION BLUR QUALITY BENCHMARKS & TESTING
+================================================================================
+
+PERFORMANCE TARGETS:
+- CPU time per frame: <15ms for all VFX calculations
+- GPU time per frame: <20ms for rendering effects
+- Memory peak: <50MB during effect playback
+- Frame rate: 30fps maintained without drops
+
+QUALITY CHECKLIST:
+[ ] Blur direction matches motion vector accurately
+[ ] All 5 presets functioning correctly
+[ ] No artifacts at preset transitions
+[ ] Performance remains <20ms per frame
+[ ] Blend mode application correct (Screen vs Normal)
+[ ] Color preservation/desaturation accurate per preset
+[ ] Smooth fade in/out at motion start/stop
+[ ] Adaptive blur scaling smooth (no jumpy scaling)
+[ ] Works correctly with multiple simultaneous effects
+[ ] Mobile performance acceptable (if applicable)
+
+TESTING PROCEDURE:
+1. Play each scene section with motion blur enabled
+2. Verify blur direction matches character motion
+3. Check for performance impact on frame rate
+4. Verify color accuracy and blend modes
+5. Test transitions between blur presets
+6. Verify audio sync unaffected by blur rendering
+7. Test with and without other VFX (dust, water, screen shake)
+8. Verify visibility on mobile resolution (if applicable)
+
+PERFORMANCE PROFILING:
+- Measure CPU time per preset using profiler
+- Measure GPU time per preset using GPU timer queries
+- Profile memory usage with profiler
+- Test frame rate stability over extended playback
+- Monitor thermal performance (if applicable)
+
+================================================================================
+STATUS: Motion Blur Preset specifications COMPLETE - Ready for implementation
+
+Next steps: Shader development, integration testing, performance optimization
+================================================================================

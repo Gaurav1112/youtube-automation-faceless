@@ -1,0 +1,628 @@
+================================================================================
+EXPERT 11: VFX & PARTICLE EFFECTS SPECIFICATIONS
+Panchatantra Animation Production - Phase 2 - Final Integration
+================================================================================
+
+DELIVERABLE OVERVIEW
+Phase 2 of Panchatantra production requires comprehensive VFX support for 5 key
+effect categories. This document specifies technical requirements, asset 
+specifications, and integration guidelines for all particle effects and visual 
+enhancements.
+
+TIMELINE: Week 5-6 (Final Integration Phase)
+TARGET PLATFORM: YouTube (desktop & mobile playback)
+FRAMERATE: 30fps locked
+MASTER RESOLUTION: 1920x1080p (1080p)
+COLOR SPACE: RGBA 32-bit (linear color critical for transparency blending)
+
+================================================================================
+1. DUST PARTICLE EFFECTS
+================================================================================
+
+PRIMARY USE CASES:
+- Character movement (footsteps, running, jumping)
+- Environmental impacts (falls, collisions, dirt disruption)
+- Scene transitions and atmospheric layering
+- Impact moments (fight sequences, creature encounters)
+
+1.1 DUST PARTICLE VARIATION SPECIFICATIONS
+
+VARIATION 1: Ground Dust (Heavy Impact)
+- Particle count: 80-120 particles
+- Sprite size: 32x32 to 128x128 pixels
+- Lifetime: 1.2-1.8 seconds (36-54 frames @ 30fps)
+- Spawn pattern: Circular burst, 45-degree angle upward
+- Velocity: 180-240 pixels/second initial, -50% per 0.3s
+- Color: #8B7355 (dark brown) with alpha decay from 255 to 0
+- Blend mode: Screen (additive for natural dust)
+- Physics: Gravity simulation (slow fall, 20px/s downward)
+- Turbulence: +/- 15% random X-axis drift
+- Scale: 1.0x start, 1.3x end (growth effect)
+
+VARIATION 2: Medium Dust (Walk/Run)
+- Particle count: 30-50 particles
+- Sprite size: 16x16 to 64x64 pixels
+- Lifetime: 0.8-1.2 seconds (24-36 frames @ 30fps)
+- Spawn pattern: Arc behind character at ground level
+- Velocity: 120-160 pixels/second initial, -40% per 0.25s
+- Color: #A0826D (medium brown) with alpha 200-240 start
+- Blend mode: Normal with 0.6x opacity
+- Physics: Minimal gravity (5px/s downward)
+- Turbulence: +/- 10% random spread
+- Scale: 0.8x start, 1.0x end
+
+VARIATION 3: Fine Dust (Ambient)
+- Particle count: 15-25 particles
+- Sprite size: 8x8 to 32x32 pixels
+- Lifetime: 2.0-3.0 seconds (60-90 frames @ 30fps)
+- Spawn pattern: Random positions within 200px radius
+- Velocity: 30-60 pixels/second initial, -20% per 0.5s
+- Color: #C9AFA0 (light brown/tan) with alpha 100-150 start
+- Blend mode: Screen at 0.4x opacity
+- Physics: Very light gravity (2px/s downward)
+- Turbulence: +/- 20% random drift (more prominent)
+- Scale: 0.6x start, 0.9x end
+
+VARIATION 4: Impact Dust (Fight/Collision)
+- Particle count: 120-180 particles per impact
+- Sprite size: 24x24 to 96x96 pixels
+- Lifetime: 0.6-1.0 seconds (18-30 frames @ 30fps)
+- Spawn pattern: Omnidirectional burst, 60-degree spread
+- Velocity: 300-400 pixels/second initial, -60% per 0.2s
+- Color: #7A6B5D (dark dust) with rapid alpha fade
+- Blend mode: Additive (bright impact flash)
+- Physics: Heavy gravity (40px/s downward)
+- Turbulence: +/- 25% random chaotic spread
+- Scale: 1.2x start, 0.7x end (shrink effect)
+
+VARIATION 5: Magical Dust (Fantasy/Supernatural)
+- Particle count: 60-90 particles
+- Sprite size: 20x20 to 80x80 pixels
+- Lifetime: 1.5-2.2 seconds (45-66 frames @ 30fps)
+- Spawn pattern: Spiral upward pattern
+- Velocity: 200-280 pixels/second initial, -30% per 0.3s
+- Color: #FFD700 (gold) mixed with #FF6B9D (pink) at 0.7 blend
+- Blend mode: Screen with glow effect
+- Physics: Reverse gravity (40px/s upward) initially, then -20px/s
+- Turbulence: +/- 30% wavy sine-wave drift
+- Scale: 0.9x start, 1.4x end (magical growth)
+- Special: Slight rotation (0-360 degrees over lifetime)
+
+SPRITE SHEET SPECIFICATION:
+- Format: PNG with transparent background
+- Color depth: RGBA 32-bit (Alpha channel critical)
+- Dimensions per sprite: 128x128 pixels (padded for all variations)
+- Grid layout: 4x4 (16 particle sprites per sheet)
+- Variation sheets needed: 5 (one per variation above)
+- Total memory: ~2.5 MB for all dust particle sheets
+
+1.2 DUST EFFECT SYNC POINTS (Scene Mapping)
+Scene 1 - Opening: Variation 3 (Ambient) at 0:05-0:15, opacity 0.3x
+Scene 2 - Rabbit Run: Variation 2 (Walk/Run) at 0:20-0:45, triggered per footstep
+Scene 3 - Lion Encounter: Variation 4 (Impact) at 1:10-1:15, on character impact
+Scene 4 - Chase Sequence: Variations 2+4 layered at 1:30-2:00
+Scene 5 - Finale: Variation 5 (Magical) at 2:45-3:00 as supernatural element
+
+================================================================================
+2. WATER SPLASH EFFECTS
+================================================================================
+
+PRIMARY USE CASES:
+- Well scene climax sequence
+- Water impact moments
+- Character entering/exiting water
+- Environmental water hazards
+
+2.1 WATER SPLASH ANIMATION SEQUENCE (20-30 Frame Breakdown)
+
+FRAME-BY-FRAME SPECIFICATION:
+
+Frames 1-4 (Anticipation - 133ms):
+- Large water bulge effect upward
+- Scale progression: 0.8x → 0.95x → 1.1x → 1.0x
+- Opacity: 0.9 constant (solid water body)
+- Color: #2E5A7F (deep blue) with alpha 230
+- Splash height: Starting point
+
+Frames 5-8 (Peak Splash - 133ms):
+- Radial burst of water particles (120-150 particles)
+- Spray trajectory: 45-80 degrees outward/upward
+- Particle lifetime: 1.5-2.0 seconds from spawn
+- Velocity: 400-500 pixels/second initial
+- Color: #4A90E2 (bright blue) with white foam overlay
+- Blend mode: Screen for bright water highlights
+- Rotation: -5 to +5 degrees rotation on particles
+- Scale: Particles at 1.2x start
+
+Frames 9-12 (Spread Phase - 133ms):
+- Splash particles continue outward motion
+- Velocity decay: 50% reduction from frame 8
+- Gravity begins: 30px/s downward
+- Secondary foam layer spawns (smaller particles)
+- Opacity: Particles fade to 200 alpha
+- Rotation: Accelerate to 360+ degrees full rotation
+
+Frames 13-16 (Falling Water - 133ms):
+- Splash particles reach maximum horizontal distance (300-400px from center)
+- Vertical position: Beginning descent phase
+- Velocity: -40% additional decay
+- Color shift: #4A90E2 toward #7FDBF0 (lighter, more transparent)
+- Gravity: 50px/s downward (acceleration)
+- Droplet separation: Secondary droplets spawn from main particles
+
+Frames 17-20 (Settling Phase - 133ms):
+- Splash particles returning downward
+- Horizontal drift: Minimal (-10% velocity)
+- Color: #7FDBF0 (very light) alpha 150-100
+- Scale: Particles shrink to 0.8x from peak
+- Surface ripple effect begins (separate layer)
+- Blend mode transition: Screen → Normal at 0.5x opacity
+
+Frames 21-24 (Final Dissipation - 133ms):
+- Remaining particles fade out
+- Vertical velocity: Controlled descent (80px/s)
+- Horizontal velocity: Near zero, slight drift
+- Alpha fade: 100 → 50 over 4 frames
+- Scale: 0.6x to 0.4x (shrinking effect)
+- Ripple effect expands: Circle grows 200px/frame
+
+Frames 25-30 (Surface Ripple - 200ms):
+- Water particles fully dissipated
+- Ripple visualization: Concentric circles expanding
+- Ripple color: #4A90E2 with alpha 200 → 0
+- Ripple scale: 400px radius at start, 800px at end
+- Ripple thickness: 8-12 pixels
+- Blend mode: Screen for natural water reflection
+- Final frame: Complete transparency return to baseline
+
+2.2 WATER SPLASH VARIATIONS
+
+CALM SPLASH (Light Water Disturbance):
+- Particle count: 40-60 (vs 120-150 standard)
+- Velocity: 250-300 pixels/second (vs 400-500)
+- Duration: 1.2 seconds (vs 1.8 seconds)
+- Height: 200-250 pixels (vs 350-400 pixels)
+- Use case: Gentle water contact, shallow splashes
+
+VIOLENT SPLASH (Impact/Emergency):
+- Particle count: 200-250 (vs 120-150 standard)
+- Velocity: 550-650 pixels/second (vs 400-500)
+- Duration: 2.2 seconds (vs 1.8 seconds)
+- Height: 450-550 pixels (vs 350-400 pixels)
+- Color intensity: 100% saturation, bright white foam
+- Use case: Character falling, dramatic water impact
+
+WAVE SPLASH (Cascading Motion):
+- Particle count: 100-140 particles
+- Velocity: 300-350 pixels/second initial, then -70% decay
+- Duration: 2.5 seconds
+- Pattern: Layered horizontal spray, 3-4 waves
+- Delay between waves: 0.2 seconds
+- Use case: Water flowing over obstacles, wave motion
+
+2.3 WATER SPRITE SHEET SPECIFICATION
+- Format: PNG with transparent background
+- Color depth: RGBA 32-bit
+- Sprite size: 96x96 pixels per particle
+- Grid layout: 6x6 (36 water particle sprites per sheet)
+- Variation sheets: 3 (Calm, Standard, Violent)
+- Total memory: 1.8 MB for all water sprites
+- Include: Droplet shapes (round, teardrop, splat) + foam particles
+
+================================================================================
+3. MOTION BLUR EFFECTS
+================================================================================
+
+PRIMARY USE CASES:
+- Character rapid movement (chase sequences)
+- Fast action moments
+- Camera pan acceleration
+- Dynamic scene transitions
+
+3.1 MOTION BLUR PRESET SPECIFICATIONS
+
+PRESET 1: SUBTLE BLUR (Speed: 30-50 pixels/frame)
+- Blur radius: 3-5 pixels
+- Blur direction: Motion vector aligned
+- Opacity: 0.15-0.25 (very subtle)
+- Sample count: 4 blur samples
+- Color: Native object color with reduced saturation (-20%)
+- Application: Walking, gentle movement, normal dialogue scenes
+- Frame duration: 16-33 milliseconds (1-2 frames)
+- Blend mode: Screen at 0.2x opacity
+
+PRESET 2: MODERATE BLUR (Speed: 80-150 pixels/frame)
+- Blur radius: 8-12 pixels
+- Blur direction: Motion vector aligned, 45-degree spread
+- Opacity: 0.30-0.45 (visible but not overpowering)
+- Sample count: 8 blur samples
+- Color: Native object color, full saturation maintained
+- Application: Running, combat movement, chasing sequences
+- Frame duration: 33-66 milliseconds (1-2 frames @ 30fps)
+- Blend mode: Normal at 0.35x opacity + Screen at 0.1x (layered)
+
+PRESET 3: EXTREME BLUR (Speed: 200+ pixels/frame)
+- Blur radius: 18-28 pixels
+- Blur direction: Full 360-degree radial spread
+- Opacity: 0.50-0.70 (prominent effect)
+- Sample count: 16 blur samples (high quality)
+- Color: Desaturated to 60% original color intensity
+- Application: High-speed chases, magical effects, dramatic moments
+- Frame duration: 66-100 milliseconds (2-3 frames @ 30fps)
+- Blend mode: Screen at 0.4x opacity (strong glow effect)
+- Special: Add white highlight streak (directional indicator)
+
+PRESET 4: DEPTH-BASED BLUR (Tiered Speed)
+- Foreground objects: Preset 2 (Moderate)
+- Mid-ground objects: Preset 1 (Subtle)
+- Background objects: None (static reference)
+- Enables depth perception during fast motion
+- Application: Scene depth enhancement during high-action moments
+- Blend: Layered composition with depth separation
+
+PRESET 5: ZOOM BLUR (Radial Motion from Center)
+- Blur origin: Center point of screen or object
+- Blur radius: 20-35 pixels (radial from center)
+- Directional style: Emanating outward from center
+- Opacity: 0.40-0.60
+- Sample count: 12 blur samples in radial pattern
+- Application: Camera zoom in/out, focus transitions, teleportation effects
+- Frame duration: 50-100 milliseconds
+- Blend mode: Screen at 0.35x opacity
+
+3.2 MOTION BLUR APPLICATION RULES
+
+Scene Type: Combat/Chase Sequences
+- Trigger condition: Velocity > 120 pixels/second
+- Blur preset: Moderate (Preset 2)
+- Duration: 2-4 frames per motion segment
+- Fade in/out: 1 frame linear fade for smooth transitions
+
+Scene Type: Magical/Fantasy Moments
+- Trigger condition: Special ability activation
+- Blur preset: Extreme (Preset 3)
+- Duration: 3-6 frames sustained
+- Color modification: Add tint color (gold, pink, etc.)
+- Additional layer: Particle glow effect layered beneath
+
+Scene Type: Camera Movement
+- Trigger condition: Camera pan speed > 100 pixels/frame
+- Blur preset: Zoom Blur (Preset 5)
+- Duration: Entire pan duration
+- Easing: Linear motion with ease-out deceleration
+
+3.3 MOTION BLUR IMPLEMENTATION
+- Effect type: Post-processing shader or pre-rendered sprite trail
+- Performance target: <50ms per frame at 1920x1080 resolution
+- Quality mode: 2-pass rendering (forward + bloom pass)
+- CPU vs GPU: GPU preferred (shader-based), fallback to sprite trails
+
+================================================================================
+4. SCREEN SHAKE & IMPACT EFFECTS
+================================================================================
+
+PRIMARY USE CASES:
+- Fight sequence impacts
+- Collision moments
+- Creature roars/presence
+- Dramatic emotional beats
+
+4.1 SCREEN SHAKE SPECIFICATIONS
+
+SHAKE TYPE 1: LIGHT IMPACT (Minor Disturbance)
+- Intensity: 2-4 pixels max displacement
+- Duration: 200-300 milliseconds (6-9 frames @ 30fps)
+- Frequency: 15 Hz (rapid vibration)
+- Pattern: Random XY offset per frame
+- Decay: Linear fade to zero over duration
+- Application: Small hits, creature footsteps, minor impacts
+- Return speed: Instant (no easing, immediate calm)
+- Effect chain: Single shake event
+
+SHAKE TYPE 2: MEDIUM IMPACT (Notable Event)
+- Intensity: 5-8 pixels max displacement
+- Duration: 350-500 milliseconds (10-15 frames @ 30fps)
+- Frequency: 10 Hz (prominent vibration)
+- Pattern: Directional offset + random XY
+- Decay: Ease-out curve (gradual reduction)
+- Application: Regular punch/kick, creature attacks, environmental events
+- Return speed: 150 milliseconds ease-in transition
+- Effect chain: Primary shake + 20% secondary aftershock at 0.3s mark
+
+SHAKE TYPE 3: HEAVY IMPACT (Dramatic Moment)
+- Intensity: 10-15 pixels max displacement
+- Duration: 600-800 milliseconds (18-24 frames @ 30fps)
+- Frequency: 7 Hz (slower, heavier vibration)
+- Pattern: Directional bias (e.g., fall = downward bias, strike = opposite direction)
+- Decay: Ease-out over 400ms, then ease-in for final 200ms
+- Application: Major collision, creature roar, magical explosion
+- Return speed: 200-300 milliseconds controlled return
+- Effect chain: Primary shake + dual aftershocks (0.3s and 0.6s marks)
+- Color flash: Optional white screen flash (50-100ms, 20% opacity)
+
+SHAKE TYPE 4: EXTREME IMPACT (Catastrophic Event)
+- Intensity: 20-30 pixels max displacement
+- Duration: 1000-1500 milliseconds (30-45 frames @ 30fps)
+- Frequency: 5 Hz (slow, powerful vibration)
+- Pattern: Directional clusters (grouped offset patterns)
+- Decay: Complex ease-out curve with multiple damping stages
+- Application: Large creature appearance, magical events, narrative climax
+- Return speed: 400-600 milliseconds controlled return
+- Effect chain: Primary shake + three aftershocks (0.3s, 0.7s, 1.1s marks)
+- Color flash: White flash (100-150ms, 30% opacity) + optional color tint
+- Audio sync: Perfect frame-sync with impact sound effect
+- Additional: Depth field blur during shake (optional enhancement)
+
+4.2 SCREEN SHAKE CAMERA PARAMETERS
+
+Camera Displacement Calculation:
+- Base formula: offset = intensity × sin(time × frequency × 2π) × decay_curve(time)
+- X-axis: Random offset between -intensity and +intensity
+- Y-axis: Random offset between -intensity and +intensity
+- Z-axis (depth): Optional, ±1-2 pixel focus shift for depth effect
+
+Rotation component (Heavy impacts only):
+- Rotation angle: ±1-3 degrees max rotation
+- Duration: 80% of shake duration
+- Easing: Opposite decay curve (starts zero, peaks mid-shake, returns to zero)
+- Application: Dramatic "camera tilt" effect for major impacts
+
+4.3 SCREEN SHAKE APPLICATION TIMING (Scene Mapping)
+
+Scene 2 - Rabbit Encounter: 
+- Trigger: Rabbit jumping (Light Impact, Shake Type 1)
+- Timing: 0:25-0:30 (frame 750-900)
+
+Scene 3 - Lion First Appearance:
+- Trigger: Lion roar (Heavy Impact, Shake Type 3)
+- Timing: 1:05-1:10 (frame 1950-2100)
+- Special: Include color flash (golden tint)
+
+Scene 4 - Chase Sequence:
+- Trigger: Collision at well edge (Medium Impact, Shake Type 2)
+- Timing: 1:50-1:55 (frame 3300-3450)
+- Multiple impacts stacked (3x Medium shakes, 0.2s apart)
+
+Scene 5 - Climactic Finale:
+- Trigger: Magical transformation (Extreme Impact, Shake Type 4)
+- Timing: 2:55-3:05 (frame 5250-5400)
+- Special: Extended duration, dual color flashes, rotation component
+
+================================================================================
+5. ATMOSPHERIC & LIGHT RAY EFFECTS
+================================================================================
+
+PRIMARY USE CASES:
+- Ambient atmosphere (fog, haze, lighting mood)
+- Magical light rays (sunlight, mystical glow)
+- Scene transitions and mood setting
+- Environmental storytelling
+
+5.1 LIGHT RAY SPECIFICATIONS
+
+LIGHT RAY TYPE 1: VOLUMETRIC SUNLIGHT (God Rays)
+- Ray count: 8-12 rays per scene
+- Ray width: 40-80 pixels at origin, 200-400 pixels at end
+- Ray length: 400-800 pixels (extends from light source)
+- Color: #FFFFFF (white) with yellow tint #FFE58C (20% blend)
+- Opacity: 0.20-0.35 (subtle atmospheric)
+- Angle spread: 15-30 degrees total fan spread
+- Movement: Slow gentle sway (0.5-1.0 Hz oscillation)
+- Lifetime: Persistent or 2-5 seconds fade in/out
+- Blend mode: Screen (additive for light effect)
+- Falloff: Linear fade from origin to end point
+- Use case: Morning/afternoon scenes, outdoor ambient lighting
+
+LIGHT RAY TYPE 2: MAGICAL MYSTICAL RAYS
+- Ray count: 5-8 rays
+- Ray width: 30-60 pixels at origin
+- Ray length: 600-1200 pixels
+- Color: #FF6B9D (pink) with #9D4EDD (purple) blend at 0.5
+- Opacity: 0.25-0.40 (more visible, supernatural)
+- Angle spread: 20-40 degrees (wider spread)
+- Movement: Faster rotation (2-3 Hz pulsing) + lateral sway
+- Lifetime: 1.5-3.0 seconds entrance animation, then persistent
+- Blend mode: Screen at 0.6x opacity + Additive at 0.2x (layered)
+- Falloff: Ease-out curve with smooth dissipation
+- Particle enhancement: Add floating sparkles along ray paths
+- Use case: Magical moments, creature appearances, fantasy scenes
+
+LIGHT RAY TYPE 3: FILTERED INTERIOR LIGHT
+- Ray count: 6-10 rays
+- Ray width: 50-100 pixels at origin
+- Ray length: 300-500 pixels (shorter, contained)
+- Color: Warm #FFA500 (orange) to #FFD700 (gold) gradient
+- Opacity: 0.15-0.25 (dim, filtered effect)
+- Angle spread: 10-20 degrees (narrow focused rays)
+- Movement: Very slow sway (0.2-0.4 Hz), drifting motion
+- Lifetime: Persistent background element
+- Blend mode: Screen with 0.4x opacity base
+- Dust interaction: Dust particles more visible within ray areas
+- Falloff: Gaussian falloff for soft disappearance
+- Use case: Indoor scenes, cave lighting, enclosed spaces
+
+LIGHT RAY TYPE 4: DRAMATIC SPOTLIGHT
+- Ray count: 3-5 rays (focused)
+- Ray width: 60-120 pixels at origin, 800-1200 pixels at end
+- Ray length: 800-1500 pixels (extended reach)
+- Color: #FFFFFF (pure white) with optional color tint
+- Opacity: 0.35-0.50 (prominent, draws focus)
+- Angle spread: 5-15 degrees (tight, focused beam)
+- Movement: Optional pulsing (fade in/out 2-3 Hz)
+- Lifetime: Scene-dependent (3-10 seconds or persistent)
+- Blend mode: Screen at 0.8x opacity (strong effect)
+- Secondary effect: Lens flare optional (3-5 artifacts)
+- Use case: Highlighting important narrative moments, dramatic reveals
+
+5.2 ATMOSPHERIC HAZE/FOG SPECIFICATIONS
+
+HAZE TYPE 1: LIGHT FOG (Ambient Background)
+- Coverage: 10-20% of screen
+- Color: #E8E8E8 (light gray) to #B0C4DE (steel blue) gradient
+- Opacity: 0.08-0.15
+- Layer depth: Background layer (behind characters)
+- Movement: Very subtle drift (0.5px/frame horizontal)
+- Density variation: Random 5-10% variation per frame
+- Texture: Soft noise pattern (Perlin noise preferred)
+- Blend mode: Normal at low opacity, Screen optional for glow
+- Use case: Ambient atmosphere, depth enhancement
+
+HAZE TYPE 2: MODERATE FOG (Weather/Mood)
+- Coverage: 30-50% of screen
+- Color: #808080 (medium gray) to #4A90E2 (blue) transition
+- Opacity: 0.20-0.35
+- Layer depth: Mid-ground layer (partially obscures characters)
+- Movement: Slower drift (1-2px/frame horizontal, vertical sway)
+- Density variation: Higher variation (15-25% per frame)
+- Texture: Layered noise patterns (2-3 noise layers)
+- Blend mode: Normal with possible Screen blend at 0.1x overlay
+- Use case: Stormy scenes, mysterious atmosphere, transition effects
+
+HAZE TYPE 3: HEAVY FOG (Dramatic/Obscuring)
+- Coverage: 60-80% of screen
+- Color: #666666 (dark gray) to #2C3E50 (dark blue)
+- Opacity: 0.40-0.60
+- Layer depth: Mid-ground and foreground layers
+- Movement: More active drift (2-4px/frame) + wave motion
+- Density variation: High variation (25-40% per frame)
+- Texture: Complex multi-layer noise with turbulence
+- Blend mode: Normal at 0.5x opacity base
+- Character visibility: Silhouettes visible but details obscured
+- Use case: Magical mists, storm climax, mystery/danger moments
+
+5.3 LIGHT RAY & ATMOSPHERE SYNC POINTS (Scene Mapping)
+
+Scene 1 - Opening/Establishing:
+- Light ray type: Type 1 (Volumetric Sunlight)
+- Ray count: 8 rays
+- Haze: Type 1 (Light Fog, 15% coverage)
+- Timing: 0:00-0:20 continuous
+- Mood: Peaceful, establishing environment
+
+Scene 2 - Day Adventure:
+- Light ray type: Type 1 (Sunlight, transitioning to Type 2)
+- Ray count: 8 rays fading to 5 magical rays at 0:35
+- Haze: Type 1 maintained (10% coverage)
+- Timing: 0:20-0:50
+- Transition: Sunlight gradually fades, magical rays intensify
+
+Scene 3 - Well Encounter:
+- Light ray type: Type 2 (Mystical) + Type 3 (Filtered Interior)
+- Ray count: 5 mystical + 8 filtered rays
+- Haze: Type 2 (Moderate Fog, 35% coverage)
+- Timing: 1:00-1:20
+- Mood: Mysterious, supernatural, slight danger
+
+Scene 4 - Chase Sequence:
+- Light ray type: Type 1 transitioning to Type 4 (Spotlight)
+- Ray count: 8 transitioning to 4 dramatic spotlight rays
+- Haze: Type 1 (20% coverage maintained)
+- Timing: 1:30-2:10
+- Effect: Spotlight on key character at climactic moments
+
+Scene 5 - Finale/Resolution:
+- Light ray type: Type 2 (Mystical Transformation) + Type 4 (Dramatic)
+- Ray count: 6 mystical + 3 spotlight rays
+- Haze: Type 3 (Heavy Fog, 50% coverage) fading to Type 1 (10%)
+- Timing: 2:50-3:10
+- Transition: Heavy mist clears as scene resolves to peace
+
+================================================================================
+6. PERFORMANCE & MEMORY SPECIFICATIONS
+================================================================================
+
+MEMORY BUDGET ALLOCATION:
+- Dust particles sprites: 2.5 MB
+- Water sprites: 1.8 MB
+- Motion blur buffers: 1.2 MB
+- Light ray textures: 0.8 MB
+- Haze/fog textures: 0.4 MB
+- Total allocated: ~7.7 MB (within 500MB library target)
+
+PERFORMANCE TARGETS:
+- CPU time per frame: <15ms for all VFX calculations
+- GPU time per frame: <20ms for rendering effects
+- Memory peak: <50MB during effect playback
+- Frame rate stability: 30fps maintained without drops
+- Resolution: Full 1920x1080p at 30fps minimum
+
+OPTIMIZATION STRATEGIES:
+- Particle pooling (reuse particle objects, avoid allocation)
+- Sprite batching (combine multiple sprites into single draw call)
+- Texture atlasing (pack sprites into single texture files)
+- LOD system (reduce particle counts on lower-end devices)
+- Shader optimization (use efficient blend modes, minimize overdraw)
+- Timing sync: GPU queries for precise timing vs audio
+
+================================================================================
+7. QUALITY BENCHMARKS & TESTING
+================================================================================
+
+QUALITY CHECKLIST:
+
+Dust Particles:
+[ ] Smooth animation with consistent 30fps
+[ ] Correct particle count per variation
+[ ] Proper alpha blending without artifacts
+[ ] Accurate collision with environment (if applicable)
+[ ] Color accuracy in different lighting conditions
+[ ] Memory usage <3 MB for all dust assets
+
+Water Splash:
+[ ] 20-30 frame sequence plays smoothly
+[ ] Particle velocity and trajectory match specifications
+[ ] Ripple effect expands correctly
+[ ] Color transitions smooth (no visible banding)
+[ ] Audio sync perfect (±1 frame tolerance)
+[ ] Variations (calm/violent/wave) working correctly
+
+Motion Blur:
+[ ] Blur direction matches motion vector
+[ ] 5 presets functioning correctly
+[ ] No artifacts at preset transitions
+[ ] Performance <20ms per frame
+[ ] Blend mode application correct
+
+Screen Shake:
+[ ] 4 shake types functioning
+[ ] Camera displacement within specified ranges
+[ ] Decay curves smooth and predictable
+[ ] Aftershocks triggering correctly
+[ ] Color flashes synchronized with shakes
+[ ] No frame skipping during extreme impacts
+
+Light Rays & Atmosphere:
+[ ] 4 light ray types rendering correctly
+[ ] 3 haze types with proper opacity
+[ ] Smooth animation/oscillation
+[ ] Blend modes produce natural light effect
+[ ] Scene transitions smooth
+[ ] Particle visibility within ray areas enhanced
+
+TESTING PROCEDURE:
+1. Play each scene section (0:00-3:10) at full resolution
+2. Verify frame rate stability (30fps locked)
+3. Spot-check memory usage (should stay <50MB)
+4. Verify audio sync accuracy (<1 frame drift)
+5. Test on mobile resolution (simulate mobile playback)
+6. Check color accuracy (proper saturation, contrast)
+7. Verify blend modes in different lighting conditions
+
+================================================================================
+8. ASSET DELIVERY CHECKLIST
+================================================================================
+
+DELIVERABLE 1: VFX Effects Specifications ✓ (THIS DOCUMENT)
+DELIVERABLE 2: Dust Particle Effect Variations (expert-11-dust-variations.txt)
+DELIVERABLE 3: Water Splash Animation Sequence (expert-11-water-splash.txt)
+DELIVERABLE 4: Motion Blur Presets (expert-11-motion-blur.txt)
+DELIVERABLE 5: Screen Shake Documentation (expert-11-screen-shake.txt)
+DELIVERABLE 6: Atmospheric/Light Effects Guide (expert-11-light-effects.txt)
+DELIVERABLE 7: VFX Integration Guide (expert-11-vfx-integration.txt)
+
+STATUS: MASTER SPECIFICATION COMPLETE
+Next: Generate detailed variation documentation for each effect category.
+
+================================================================================
+END OF EXPERT 11: VFX & PARTICLE EFFECTS SPECIFICATIONS
+================================================================================

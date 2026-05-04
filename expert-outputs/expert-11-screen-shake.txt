@@ -1,0 +1,610 @@
+================================================================================
+EXPERT 11: SCREEN SHAKE & IMPACT EFFECTS - TECHNICAL DOCUMENTATION
+Panchatantra Animation Production - Phase 2
+================================================================================
+
+DOCUMENT PURPOSE:
+Comprehensive specifications for screen shake and camera impact effects with
+detailed timing, physics calculations, and scene-by-scene mapping.
+
+MASTER SPECIFICATIONS:
+- Effect type: Camera displacement with optional rotation
+- Framerate: 30fps locked
+- Resolution: 1920x1080p
+- Color space: RGBA 32-bit
+- Audio sync: Frame-perfect synchronization required
+
+================================================================================
+SHAKE TYPE 1: LIGHT IMPACT (Minor Disturbance)
+================================================================================
+
+SCENARIO:
+Small hit, minor collision, creature footstep, or environmental disturbance
+that should be noticeable but not intrusive.
+
+INTENSITY SPECIFICATIONS:
+- Max displacement: 2-4 pixels
+- Target typical: 3 pixels average
+- Direction: Random XY offset per frame
+
+DURATION:
+- Total duration: 200-300 milliseconds
+- Frame count: 6-9 frames @ 30fps
+- Typical: 7 frames (233ms)
+
+FREQUENCY:
+- Vibration frequency: 15 Hz
+- Frame-by-frame vibration: 2 cycles per 300ms
+- Period: 67 milliseconds per cycle
+- Characteristic: Rapid, zippy vibration
+
+DISPLACEMENT PATTERN (Typical 7-frame example):
+Frame 1 (0ms):   Offset +2px, +1px
+Frame 2 (33ms):  Offset -3px, +2px
+Frame 3 (67ms):  Offset +1px, -2px
+Frame 4 (100ms): Offset -2px, -1px
+Frame 5 (133ms): Offset +3px, 0px
+Frame 6 (167ms): Offset -1px, +2px
+Frame 7 (200ms): Offset +0px, -1px (damping)
+
+DECAY FUNCTION:
+- Decay type: Linear fade to zero
+- Decay rate: 1/6 per frame (linear)
+- Frame 1: 100% intensity (3 pixels)
+- Frame 4: 50% intensity (1.5 pixels)
+- Frame 7: 16% intensity (0.5 pixels)
+
+RETURN SPEED:
+- Type: Instant (no easing)
+- Transition: Immediate calm return
+- Perception: Noticeable snap back to baseline
+
+BLEND MODE:
+- Camera offset: Direct XY translation of camera matrix
+- No rotation component
+- Simple 2D displacement
+
+PERFORMANCE PROFILE:
+- CPU cost: 0.1ms per frame
+- GPU cost: 0x (no GPU rendering cost)
+- Memory: Negligible (only 2 float values)
+- Frame rate impact: <1% of budget
+
+USE CASES:
+- Small punch/jab impact
+- Creature footstep tremor
+- Minor collision
+- Door slam
+- Small explosion nearby
+- Arrow impact (non-critical)
+
+EXAMPLE APPLICATION:
+Scene: Rabbit jumping (Scene 2)
+Trigger: Rabbit lands from jump
+Intensity: 3 pixels
+Duration: 200ms (6 frames)
+Effect: Small tremor showing landing impact
+
+================================================================================
+SHAKE TYPE 2: MEDIUM IMPACT (Notable Event)
+================================================================================
+
+SCENARIO:
+Regular punch/kick, creature attack, environmental collision, or regular
+combat action that should be clearly visible but not extreme.
+
+INTENSITY SPECIFICATIONS:
+- Max displacement: 5-8 pixels
+- Target typical: 6-7 pixels average
+- Direction: Directional bias + random XY
+
+DURATION:
+- Total duration: 350-500 milliseconds
+- Frame count: 10-15 frames @ 30fps
+- Typical: 12 frames (400ms)
+
+FREQUENCY:
+- Vibration frequency: 10 Hz
+- Frame-by-frame vibration: 1.3 cycles per 400ms
+- Period: 100 milliseconds per cycle
+- Characteristic: Noticeable, moderate vibration
+
+DISPLACEMENT PATTERN (Typical 12-frame example):
+Frame 1 (0ms):   Offset +6px, +4px
+Frame 2 (33ms):  Offset -5px, +7px
+Frame 3 (67ms):  Offset +7px, -6px
+Frame 4 (100ms): Offset -4px, -5px
+Frame 5 (133ms): Offset +5px, +3px
+Frame 6 (167ms): Offset -6px, +2px
+Frame 7 (200ms): Offset +3px, -3px
+Frame 8 (233ms): Offset -3px, -2px
+Frame 9 (267ms): Offset +2px, +1px
+Frame 10 (300ms): Offset -1px, 0px
+Frame 11 (333ms): Offset +1px, -1px
+Frame 12 (367ms): Offset 0px, 0px
+
+DECAY FUNCTION:
+- Decay type: Ease-out curve
+- Curve formula: intensity × (1 - (frame / total_frames)^2)
+- Frame 1: 100% intensity (7 pixels)
+- Frame 6: 50% intensity (3.5 pixels)
+- Frame 12: 0% intensity (complete decay)
+
+RETURN SPEED:
+- Type: Ease-in transition
+- Duration: 150 milliseconds after shake ends
+- Transition: Smooth controlled return over 5 frames
+- Perception: Feels weighted and impactful
+
+DIRECTIONAL BIAS (Impact-dependent):
+- Forward punch: +X bias (camera pushed backward)
+- Upward hit: +Y bias (camera pushed upward)
+- Jump landing: -Y bias (camera pushed downward)
+- Sideways hit: ±X bias (lateral camera movement)
+
+ROTATIONAL COMPONENT: None (pure translation)
+
+BLEND MODE:
+- Camera offset: XY translation with ease-out decay
+- No rotation
+- Smooth camera movement with momentum feel
+
+PERFORMANCE PROFILE:
+- CPU cost: 0.2ms per frame
+- GPU cost: 0x (no GPU cost)
+- Memory: ~8 bytes (position offset)
+- Frame rate impact: ~1.3% of budget
+
+AFTERSHOCK EFFECT:
+- Aftershock timing: 0.3 seconds (9 frames) after main shake ends
+- Aftershock type: Secondary minor shake (20% of main intensity)
+- Aftershock duration: 100-150ms (3-5 frames)
+- Aftershock intensity: ~1.4 pixels
+- Effect: Realistic impact with resonance
+
+USE CASES:
+- Regular punch/kick in combat
+- Creature attacking
+- Character collision with wall/obstacle
+- Medium explosion
+- Combat hit detection moment
+
+EXAMPLE APPLICATION:
+Scene: Combat sequence (Scene 4 - Chase)
+Trigger: Character punch connects
+Intensity: 6 pixels
+Duration: 400ms (12 frames)
+Direction: Forward bias (punch moving forward)
+Aftershock: 20% intensity at 0.3s mark
+Effect: Clear impact feedback with weighting
+
+================================================================================
+SHAKE TYPE 3: HEAVY IMPACT (Dramatic Moment)
+================================================================================
+
+SCENARIO:
+Major collision, creature roar, large explosion, significant environmental
+event, or dramatic narrative moment that demands attention.
+
+INTENSITY SPECIFICATIONS:
+- Max displacement: 10-15 pixels
+- Target typical: 12 pixels average
+- Direction: Directional clusters with random variance
+
+DURATION:
+- Total duration: 600-800 milliseconds
+- Frame count: 18-24 frames @ 30fps
+- Typical: 20 frames (667ms)
+
+FREQUENCY:
+- Vibration frequency: 7 Hz
+- Frame-by-frame vibration: 0.9 cycles per 667ms
+- Period: 143 milliseconds per cycle
+- Characteristic: Slow, heavy, powerful vibration
+
+DISPLACEMENT PATTERN (Complex clusters):
+Frames 1-3: High amplitude cluster (+12 to -12 pixels)
+Frames 4-7: Medium amplitude modulation (±8 pixels)
+Frames 8-12: Slow oscillation (±6 pixels)
+Frames 13-18: Damping phase (±3 pixels)
+Frames 19-20: Final settlement (±1 pixel)
+
+DECAY FUNCTION:
+- Decay type: Complex ease-out with multiple damping stages
+- Stage 1 (0-200ms): Linear 50% reduction
+- Stage 2 (200-400ms): Quadratic ease-out
+- Stage 3 (400-667ms): Cubic ease-out to zero
+- Formula: intensity × max(0, 1 - (frame / total_frames)^1.5)
+
+RETURN SPEED:
+- Type: Ease-in weighted motion
+- Duration: 200-300 milliseconds after main shake
+- Transition: Smooth deceleration over 6-9 frames
+- Perception: Feels impactful and grounded
+
+DIRECTIONAL BIAS:
+- Primary bias: Direction of impact force
+- Intensity: 70% toward impact direction
+- Variance: 30% random orthogonal component
+- Effect: Camera pushed away from impact
+
+ROTATIONAL COMPONENT:
+- Rotation type: Camera tilt
+- Rotation angle: ±1-3 degrees max rotation
+- Rotation sync: Follows shake intensity curve
+- Duration: 80% of shake duration
+- Easing: Opposite decay curve (starts zero, peaks mid-shake)
+
+ROTATION DAMPING PROFILE:
+- Peak rotation: 2 degrees at frame 10 (mid-shake)
+- Frame 1: 0 degrees rotation
+- Frame 10: 2.0 degrees rotation
+- Frame 20: 0 degrees rotation (returned to baseline)
+
+BLEND MODE:
+- Camera offset: XY translation with rotation
+- Combined effect: Significant camera displacement
+- Momentum: Feels heavy and impactful
+
+PERFORMANCE PROFILE:
+- CPU cost: 0.4ms per frame (rotation calculation added)
+- GPU cost: 0x (still no GPU cost)
+- Memory: ~24 bytes (position + rotation)
+- Frame rate impact: ~2.7% of budget
+
+AFTERSHOCK EFFECTS:
+- Primary aftershock: 0.3 seconds after main shake ends
+  - Intensity: 30% of main (3.6 pixels)
+  - Duration: 150ms (4-5 frames)
+- Secondary aftershock: 0.7 seconds after main shake
+  - Intensity: 15% of main (1.8 pixels)
+  - Duration: 100ms (3 frames)
+- Tertiary aftershock: 1.1 seconds after main shake
+  - Intensity: 8% of main (0.96 pixels)
+  - Duration: 50ms (1-2 frames)
+
+USE CASES:
+- Major collision/crash
+- Creature roar (presence effect)
+- Large explosion
+- Dramatic impact moment
+- Critical narrative event
+
+EXAMPLE APPLICATION:
+Scene: Lion first appearance (Scene 3 - Lion Encounter)
+Trigger: Lion roars
+Intensity: 12 pixels
+Duration: 600ms (18 frames)
+Direction: Omnidirectional with outward bias
+Rotation: ±2 degrees
+Aftershocks: Multiple at 0.3s, 0.7s, 1.1s intervals
+Color flash: Golden tint during roar
+Audio sync: Frame-perfect sync with roar sound
+
+================================================================================
+SHAKE TYPE 4: EXTREME IMPACT (Catastrophic Event)
+================================================================================
+
+SCENARIO:
+Massive collision, magical transformation, mystical event, or critical
+narrative climax requiring maximum visual impact.
+
+INTENSITY SPECIFICATIONS:
+- Max displacement: 20-30 pixels
+- Target typical: 25 pixels average
+- Direction: Complex directional clusters
+- Pattern: Non-uniform intensity distribution
+
+DURATION:
+- Total duration: 1000-1500 milliseconds
+- Frame count: 30-45 frames @ 30fps
+- Typical: 40 frames (1333ms)
+
+FREQUENCY:
+- Vibration frequency: 5 Hz
+- Frame-by-frame vibration: 0.67 cycles per 1333ms
+- Period: 200 milliseconds per cycle
+- Characteristic: Slow, extremely powerful vibration
+
+DISPLACEMENT PATTERN (Complex multi-stage):
+Stage 1 - Initial burst (Frames 1-5, 167ms):
+  High-amplitude cluster: ±25 pixels
+  Rapid intensity changes
+  Maximum impact perception
+
+Stage 2 - Primary damping (Frames 6-15, 333ms):
+  Moderate amplitude: ±15 pixels
+  Slower oscillation
+  Weight settling in
+
+Stage 3 - Secondary damping (Frames 16-30, 467ms):
+  Low amplitude: ±8 pixels
+  Very slow oscillation
+  Final settling
+
+Stage 4 - Tertiary damping (Frames 31-40, 333ms):
+  Minimal amplitude: ±2 pixels
+  Nearly imperceptible motion
+  Return to baseline
+
+DECAY FUNCTION:
+- Decay type: Extreme ease-out with 4 damping stages
+- Formula: intensity × (1 - (frame / total_frames)^1.2) × damping_curve(frame)
+- Stage curves: Cubic, Quartic, Quintic progression
+- Non-linear progression: Faster initial decay, slower final settlement
+
+RETURN SPEED:
+- Type: Controlled deceleration
+- Duration: 400-600 milliseconds after main shake
+- Transition: Smooth weighted return over 12-18 frames
+- Perception: Feels massive and grounded
+
+DIRECTIONAL BIAS (Impact type-dependent):
+- Magical transformation: Omnidirectional (all directions)
+- Large creature impact: Away from impact source
+- Explosion: Radial from explosion center
+- Intensity: 60% directional bias + 40% random
+
+ROTATIONAL COMPONENT:
+- Rotation type: Full camera tilt + roll
+- Max rotation: ±2-3 degrees
+- Additional roll: Optional ±1 degree Z-axis rotation
+- Duration: Full shake duration
+- Easing: Complex curve matching displacement decay
+
+ROTATION PROFILE:
+- Peak rotation: 3 degrees tilt + 1 degree roll at frame 20
+- Rotation frequency: Slower than translation (0.3x frequency)
+- Frame 1: 0 degrees rotation
+- Frame 20: 3 degree tilt, 1 degree roll (peak)
+- Frame 40: 0 degrees rotation (returned to baseline)
+
+COLOR FLASH EFFECTS:
+- Flash type: Full-screen white flash
+- Flash timing: Frames 1-3 (100-150ms)
+- Flash opacity: 30% (visible but not blinding)
+- Flash color: #FFFFFF (white) primary, optional tint
+
+Optional color tint (scene-dependent):
+- Magical event: Gold (#FFD700) tint
+- Supernatural: Pink (#FF6B9D) tint
+- Explosion: Orange (#FF8C00) tint
+- Transformation: Purple (#9D4EDD) tint
+
+Tint blend:
+- Tint opacity: 50% of main flash
+- Blend mode: Screen (additive)
+- Duration: 150-250ms total
+
+BLEND MODE:
+- Camera offset: XY translation + rotation
+- Multi-component effect: Displacement + tilt + roll
+- Intensity: Extremely prominent camera movement
+
+PERFORMANCE PROFILE:
+- CPU cost: 0.6ms per frame (complex calculations)
+- GPU cost: 0.2ms per frame (color flash rendering)
+- Memory: ~40 bytes (position + rotation + color)
+- Frame rate impact: ~5.3% of budget
+
+AFTERSHOCK EFFECTS (Multiple):
+- Primary aftershock: 0.3 seconds (9 frames) after main shake
+  - Intensity: 40% of main (10 pixels)
+  - Duration: 200ms (6 frames)
+  - Rotation: ±1.2 degrees
+
+- Secondary aftershock: 0.7 seconds (21 frames) after main shake
+  - Intensity: 25% of main (6.25 pixels)
+  - Duration: 150ms (4-5 frames)
+  - Rotation: ±0.7 degrees
+
+- Tertiary aftershock: 1.1 seconds (33 frames) after main shake
+  - Intensity: 12% of main (3 pixels)
+  - Duration: 100ms (3 frames)
+  - Rotation: ±0.3 degrees
+
+- Quaternary aftershock: 1.5 seconds (45 frames) after main shake
+  - Intensity: 6% of main (1.5 pixels)
+  - Duration: 50ms (1-2 frames)
+  - Rotation: ±0.1 degrees
+
+DEPTH FIELD BLUR (Optional Enhancement):
+- Activation: During extreme shake
+- Blur type: Radial zoom blur
+- Blur intensity: 20-30 pixels
+- Duration: Synchronized with main shake
+- Effect: Additional depth effect during chaos
+
+PARTICLE INTERACTION:
+- All active particles: Affected by camera shake
+- Particle trails: Render relative to shaking camera
+- Effect: Particles shake with camera, realistic interaction
+
+USE CASES:
+- Large creature appearance
+- Magical transformation moment
+- Catastrophic environmental event
+- Narrative climax (magical power release)
+- Major magical collision
+
+EXAMPLE APPLICATION:
+Scene: Climactic finale magical transformation (Scene 5)
+Trigger: Magical transformation sequence begins
+Intensity: 25 pixels
+Duration: 1000ms (30 frames)
+Rotation: ±2.5 degrees tilt, ±0.8 degree roll
+Color flash: Gold tint (#FFD700)
+Flash opacity: 30% base + 15% gold tint
+Aftershocks: 4 diminishing aftershocks
+Particle effect: Synchronized with shake (magical dust swirling)
+Audio sync: Frame-perfect with transformation sound
+
+================================================================================
+SHAKE TYPE SELECTION DECISION TREE
+================================================================================
+
+Character of impact:
+├─ Small/Minor → Type 1 (Light Impact)
+│  └─ Examples: Footstep, light punch, minor collision
+├─ Regular/Normal → Type 2 (Medium Impact)
+│  └─ Examples: Combat hit, creature attack, collision
+├─ Major/Significant → Type 3 (Heavy Impact)
+│  └─ Examples: Large collision, roar, major impact
+└─ Extreme/Catastrophic → Type 4 (Extreme Impact)
+   └─ Examples: Magical event, transformation, climax
+
+Intensity guidance:
+- Barely noticeable: Type 1 (3 pixels)
+- Clearly visible: Type 2 (6-7 pixels)
+- Dramatic effect: Type 3 (12 pixels)
+- Maximum effect: Type 4 (25 pixels)
+
+Duration guidance:
+- Quick/snappy: Type 1 (200-300ms)
+- Standard: Type 2 (350-500ms)
+- Weighted: Type 3 (600-800ms)
+- Extended: Type 4 (1000-1500ms)
+
+================================================================================
+CAMERA DISPLACEMENT PHYSICS
+================================================================================
+
+MATHEMATICAL FORMULAS:
+
+Base displacement calculation:
+offset = intensity × sin(time × frequency × 2π) × decay_curve(time)
+
+Where:
+- intensity = max displacement in pixels
+- time = elapsed time in seconds
+- frequency = vibration frequency in Hz
+- decay_curve = function reducing intensity over time
+
+Decay curves by type:
+- Type 1 (Linear): decay = max(0, 1 - time / duration)
+- Type 2 (Ease-out): decay = max(0, 1 - (time / duration)^2)
+- Type 3 (Complex): decay = max(0, 1 - (time / duration)^1.5)
+- Type 4 (Extreme): decay = max(0, 1 - (time / duration)^1.2)
+
+Random offset (per-frame):
+random_offset = random(-intensity, +intensity)
+actual_offset = (intensity × decay_curve) + random_offset
+
+Rotation (for Types 3 & 4):
+rotation_angle = max_rotation × sin(time × 0.3 × frequency × 2π) × decay_curve(time)
+
+Where:
+- max_rotation = maximum rotation angle in degrees
+- 0.3 = rotation frequency multiplier (slower than translation)
+
+Camera matrix transformation:
+camera.position = original_position + offset_vector
+camera.rotation = original_rotation + rotation_offset
+
+================================================================================
+SCENE-BY-SCENE SHAKE MAPPING
+================================================================================
+
+SCENE 1 - OPENING/ESTABLISHING:
+- Expected shakes: None
+- Reason: Peaceful establishing shots
+
+SCENE 2 - RABBIT ENCOUNTER (0:25-0:30):
+- Shake event: Rabbit jumping/landing
+- Shake type: Type 1 (Light Impact)
+- Intensity: 3 pixels
+- Duration: 200ms
+- Timing: Frame 750-756 (0:25 to 0:25.2)
+- Frequency: 15 Hz
+- Audio sync: Landing sound effect
+
+SCENE 3 - LION FIRST APPEARANCE (1:05-1:10):
+- Shake event: Lion roar
+- Shake type: Type 3 (Heavy Impact)
+- Intensity: 12 pixels
+- Duration: 600ms (18 frames)
+- Timing: Frame 1950-1968 (1:05 to 1:05.6)
+- Frequency: 7 Hz
+- Rotation: ±2 degrees
+- Color flash: Golden tint
+- Audio sync: Roar sound effect (frame-perfect)
+- Aftershocks: Yes (0.3s, 0.7s marks)
+
+SCENE 4 - CHASE SEQUENCE (1:50-1:55):
+- Shake event 1: Collision at well edge
+- Shake type: Type 2 (Medium Impact)
+- Intensity: 6-7 pixels
+- Duration: 400ms per impact
+- Timing: Multiple impacts (3x total)
+  - First: Frame 3300-3312 (1:50 to 1:50.4)
+  - Second: Frame 3360-3372 (1:52 to 1:52.4)
+  - Third: Frame 3420-3432 (1:54 to 1:54.4)
+- Spacing: 0.2 seconds between impacts
+- Aftershock: 20% intensity at 0.3s mark per impact
+- Audio sync: Impact sound effects
+
+SCENE 5 - CLIMACTIC FINALE (2:55-3:05):
+- Shake event: Magical transformation sequence
+- Shake type: Type 4 (Extreme Impact)
+- Intensity: 25 pixels
+- Duration: 1000ms (30 frames)
+- Timing: Frame 5250-5280 (2:55 to 3:00)
+- Frequency: 5 Hz
+- Rotation: ±2.5 degrees tilt + ±0.8 degree roll
+- Color flash: Gold tint (30% opacity)
+- Color tint: Gold (#FFD700) at 15% opacity
+- Audio sync: Transformation sound effect (frame-perfect)
+- Aftershocks: 4 sequential aftershocks
+  - Primary: 0.3s after (30% intensity)
+  - Secondary: 0.7s after (25% intensity)
+  - Tertiary: 1.1s after (12% intensity)
+  - Quaternary: 1.5s after (6% intensity)
+- Particle sync: Magical dust effect synchronized with shake
+- Special: Depth field blur during shake (optional)
+
+================================================================================
+PERFORMANCE & OPTIMIZATION
+================================================================================
+
+PERFORMANCE TARGETS:
+- CPU cost: <1ms per frame (all shake types combined)
+- GPU cost: <0.2ms per frame (color flash only)
+- Memory: <100 bytes per active shake
+- Frame rate: 30fps maintained without drops
+
+OPTIMIZATION TIPS:
+1. Camera shake: Pure CPU calculation (no GPU cost)
+2. Color flash: Simple full-screen quad (minimal GPU cost)
+3. Pooling: Pre-allocate shake event objects
+4. Caching: Pre-compute sine/cosine lookup tables
+5. Early exit: Disable shake calculation when decay reaches zero
+
+MOBILE OPTIMIZATION:
+- Consider reducing max intensity by 20% on mobile
+- Can disable rotation component on low-end devices
+- Can disable color flash on battery-saving mode
+- Shake remains performant even on low-end platforms
+
+================================================================================
+QUALITY ASSURANCE CHECKLIST
+================================================================================
+
+[ ] Type 1 shakes (6-frame, 3-pixel light impacts) working correctly
+[ ] Type 2 shakes (12-frame, 6-pixel medium impacts) with aftershocks
+[ ] Type 3 shakes (18-frame, 12-pixel heavy impacts) with rotation
+[ ] Type 4 shakes (30-frame, 25-pixel extreme impacts) with color flash
+[ ] Decay curves smooth and predictable per type
+[ ] Aftershocks triggering at correct intervals (0.3s, 0.7s, 1.1s marks)
+[ ] Camera displacement within specified ranges
+[ ] Rotation component working for Types 3 & 4
+[ ] Color flashes synchronized with impact moment
+[ ] No frame skipping during extreme impacts
+[ ] Audio sync within ±1 frame tolerance
+[ ] Performance <1ms CPU, <0.2ms GPU
+[ ] Works correctly with other VFX effects (dust, water, blur)
+
+================================================================================
+STATUS: Screen Shake and Impact Effects specifications COMPLETE
+
+Ready for: Implementation, testing, scene mapping verification
+================================================================================

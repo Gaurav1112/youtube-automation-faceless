@@ -1,0 +1,641 @@
+================================================================================
+EXPERT 11: DUST PARTICLE EFFECT VARIATIONS - DETAILED CATALOG
+Panchatantra Animation Production - Phase 2
+================================================================================
+
+DOCUMENT PURPOSE:
+This document provides detailed technical specifications for all 5 dust particle
+effect variations. Each variation is designed for specific use cases with unique
+physics, visual characteristics, and performance profiles.
+
+SPRITE ASSET REQUIREMENTS (All Variations):
+- PNG format with transparent background
+- RGBA 32-bit color space (alpha channel critical)
+- Individual sprite size: 128x128 pixels
+- Grid arrangement: 4x4 (16 sprites per sheet)
+- Total sheet dimensions: 512x512 pixels
+- Anti-aliasing: 2x supersampling recommended
+
+================================================================================
+VARIATION 1: GROUND DUST - HEAVY IMPACT
+================================================================================
+
+CATEGORY: High-intensity dust burst for major impacts and environmental disruption
+
+PRIMARY USE CASES:
+- Character falling or landing hard
+- Vehicle collision
+- Creature impact with ground
+- Combat finishing moves
+- Environmental destruction
+
+VISUAL CHARACTERISTICS:
+- Color palette: Dark brown dust (#8B7355 primary, #6B5344 secondary)
+- Particle appearance: Irregular shapes, natural dust chunks
+- Size distribution: Mix of 32px to 128px sprites
+- Texture style: Rough, organic dust particles with natural edges
+
+PHYSICS SPECIFICATIONS:
+
+Initial Spawn (Frame 0):
+- Particle count: 80-120 particles (target: 100 average)
+- Spawn pattern: Circular burst centered at impact point
+- Spawn radius: 20-40 pixels
+- Spawn height: Ground level to 30 pixels above surface
+- Burst timing: Instantaneous (all particles within 50ms)
+- Birth rate: Linear curve over first 100ms
+
+Velocity Profile:
+- Initial velocity: 180-240 pixels/second (randomly distributed)
+- Direction: Outward radial + 45-degree upward bias
+- XY component split: 70% horizontal, 30% vertical upward
+- Velocity decay: -50% reduction every 0.3 seconds
+- Frame-by-frame velocity: 
+  - Frame 0: 210 px/s (average)
+  - Frame 9: 157 px/s (50% decay)
+  - Frame 18: 105 px/s (additional 50%)
+  - Frame 27: 53 px/s (final 50%)
+
+Physics:
+- Gravity: 180 pixels/second² downward (simulates falling dust)
+- Air resistance: 0.98x damping per frame (2% energy loss)
+- Collision: Simple ground plane collision (bounce at 0.3x velocity)
+- Ground bounce frames: Occurs around frame 30-40 depending on initial trajectory
+- Bounce height: 40-80 pixels after ground collision
+- Post-bounce velocity: 30% of pre-bounce velocity
+
+Rotation Profile:
+- Initial rotation: Random 0-360 degrees
+- Angular velocity: 180-360 degrees per second
+- Rotation decay: Linear decrease to 0 by end of lifetime
+- Spin axis: Z-axis (screen perpendicular)
+
+Color & Opacity Progression:
+- Frame 0: Color #8B7355, Alpha 255 (fully opaque)
+- Frame 18 (0.6s): Color #8B7355, Alpha 200 (slight transparency)
+- Frame 36 (1.2s): Color #6B5344, Alpha 80 (darker, very transparent)
+- Frame 54 (1.8s): Color #6B5344, Alpha 0 (fade to invisible)
+- Color shift: Subtle darkening as particles fall (atmospheric perspective)
+
+Scale Progression:
+- Frame 0: 1.0x scale (base size)
+- Frame 18: 1.15x scale (peak expansion)
+- Frame 36: 1.25x scale (maximum size)
+- Frame 54: 0.8x scale (final shrinkage, fade-out effect)
+- Easing: Ease-out curve for natural growth, then ease-in for shrinkage
+
+Lifetime: 1.8 seconds (54 frames @ 30fps)
+
+BLEND MODE & RENDERING:
+- Blend mode: Screen (additive blending)
+- Opacity multiplier: 1.0x (full strength)
+- Depth sorting: Back-to-front (farther particles render first)
+- Z-depth offset: Random ±10 pixels for depth variance
+- Render order: Dust layer above background, below characters
+- Mipmap filtering: Trilinear (smooth sampling)
+
+TURBULENCE & ENVIRONMENTAL EFFECTS:
+- X-axis drift: ±15% random horizontal movement independent of velocity
+- Y-axis drift: None (gravity-controlled vertical motion)
+- Perlin noise turbulence: 0.1x amplitude, 0.05 frequency
+- Wind simulation: +0px/frame base wind (can be modified per scene)
+- Particle interactions: Non-colliding (can overlap other particles)
+
+MEMORY FOOTPRINT:
+- Per-particle data: 128 bytes (position, velocity, rotation, scale, color, alpha, age)
+- Maximum particles: 120 active simultaneously
+- Total memory: ~15 KB per active frame
+- Sprite sheet: 512x512 PNG ≈ 512 KB
+- Variation total: 512 KB + 15 KB runtime = ~527 KB allocated
+
+PERFORMANCE PROFILE:
+- CPU cost: 1.2ms per frame (average, 100 particles)
+- GPU cost: 0.8ms per frame (sprite batching, 1 draw call)
+- Total frame time: 2.0ms (well below 15ms budget)
+- Frame rate impact: Negligible
+
+SPAWN TRIGGER CONDITIONS:
+- Condition type: Event-based (manual trigger required)
+- Trigger detection: Collision detection or animation frame marker
+- Spawn delay: 0ms (immediate upon trigger)
+- Multiple spawns: Can trigger multiple times (e.g., bouncing character)
+- Stacking behavior: Multiple burst effects stack naturally
+
+PARAMETERS FOR VARIATION TUNING:
+Parameter                 Default Range      Adjustment Factor
+Particle count            80-120            ±20% for scene intensity
+Initial velocity          180-240 px/s      ±30% for impact force
+Lifetime                  1.8s              ±0.3s for effect duration
+Gravity strength          180 px/s²         ±50 for wind/air density
+Rotation speed            180-360 °/s       ±100 for turbulence effect
+Turbulence amplitude      ±15%              ±5% for environmental variance
+
+================================================================================
+VARIATION 2: MEDIUM DUST - WALK/RUN
+================================================================================
+
+CATEGORY: Continuous dust generation from character movement (footsteps, running)
+
+PRIMARY USE CASES:
+- Character walking on dusty ground
+- Running/sprinting motion
+- Trotting or galloping (animals)
+- Continuous ground traversal
+- Environmental dust from creature movement
+
+VISUAL CHARACTERISTICS:
+- Color palette: Medium brown dust (#A0826D primary, #8B7355 secondary)
+- Particle appearance: Fine dust particles, somewhat rounded edges
+- Size distribution: Smaller than Variation 1 (16px-64px)
+- Texture style: Softer, finer dust with subtle grain
+
+PHYSICS SPECIFICATIONS:
+
+Spawn Mechanics:
+- Particle count per spawn: 30-50 particles (target: 40 average)
+- Spawn pattern: Arc pattern behind/underneath character
+- Spawn location: Character ground position, offset backward by 20-40 pixels
+- Spawn height: 5-20 pixels above ground (low-lying dust cloud)
+- Spawn frequency: Every 0.15-0.25 seconds (continuous generation while moving)
+- Burst timing: 50ms spawn window per footstep
+
+Velocity Profile:
+- Initial velocity: 120-160 pixels/second
+- Direction: Backward (opposite to movement direction) + slight upward (15-degree angle)
+- Velocity decay: -40% reduction every 0.25 seconds
+- Frame-by-frame velocity:
+  - Frame 0: 140 px/s (average)
+  - Frame 7.5: 84 px/s (40% decay)
+  - Frame 15: 50 px/s (additional 40%)
+  - Frame 22.5: 30 px/s (final 40%)
+
+Physics:
+- Gravity: 60 pixels/second² downward (lighter than Variation 1)
+- Air resistance: 0.97x damping per frame (3% energy loss)
+- Collision: Simple ground plane collision (no bounce, particles settle)
+- Terminal settling: Particles come to rest by frame 36 (1.2s)
+
+Rotation Profile:
+- Initial rotation: Random 0-360 degrees
+- Angular velocity: 120-240 degrees per second (slower spin)
+- Rotation decay: Linear to zero by frame 36
+- Characteristic: Gentle tumbling motion
+
+Color & Opacity Progression:
+- Frame 0: Color #A0826D, Alpha 240 (nearly opaque)
+- Frame 12 (0.4s): Color #A0826D, Alpha 180 (visible fade)
+- Frame 24 (0.8s): Color #8B7355, Alpha 100 (dim, fading)
+- Frame 36 (1.2s): Color #8B7355, Alpha 0 (completely transparent)
+
+Scale Progression:
+- Frame 0: 0.8x scale (smaller initial size)
+- Frame 12: 1.0x scale (natural size)
+- Frame 24: 1.0x scale (consistent size during fall)
+- Frame 36: 0.9x scale (slight shrinkage during fade-out)
+- Easing: Linear progression (no easing for natural drift)
+
+Lifetime: 1.2 seconds (36 frames @ 30fps)
+
+BLEND MODE & RENDERING:
+- Blend mode: Normal (standard blending)
+- Opacity multiplier: 0.6x (semi-transparent by design)
+- Depth sorting: Back-to-front render order
+- Z-depth offset: ±5 pixels random depth variance
+- Render order: Dust layer at ground level, behind characters when possible
+- Mipmap filtering: Trilinear
+
+TURBULENCE & ENVIRONMENTAL EFFECTS:
+- X-axis drift: ±10% horizontal drift (less chaotic than Variation 1)
+- Y-axis drift: None (gravity-controlled)
+- Perlin noise turbulence: 0.08x amplitude, 0.03 frequency
+- Wind simulation: +0.5 to +2.0 px/frame base wind (can be increased for scenes)
+- Environmental modulation: Wind strength adjusts drift based on scene weather
+
+SPAWN TRIGGERS & CONTINUITY:
+- Trigger type: Continuous (tied to character velocity)
+- Spawn condition: Character velocity > 40 pixels/second
+- Spawn rate: 4-6 bursts per second while moving
+- Particle accumulation: Multiple spawns layer naturally
+- Animation sync: Spawn timing tied to animation frame (footstep frames)
+
+PARAMETER TUNING FOR CHARACTERS:
+Character Type       Particle Count    Velocity      Frequency
+Small animal (rabbit)  25-35           150-180 px/s  5-6/sec
+Large animal (lion)    40-60           100-140 px/s  4-5/sec
+Heavy creature         50-70            80-120 px/s  3-4/sec
+Humanoid               30-45           120-160 px/s  4-6/sec
+
+MEMORY FOOTPRINT:
+- Per-particle data: 128 bytes
+- Maximum particles: 50 active simultaneously
+- Runtime memory: ~6.4 KB per active frame
+- Sprite sheet: 512x512 PNG ≈ 512 KB
+- Variation total: 512 KB + 6.4 KB runtime
+
+PERFORMANCE PROFILE:
+- CPU cost: 0.8ms per frame (40 particles continuous spawn)
+- GPU cost: 0.6ms per frame
+- Total frame time: 1.4ms (lightweight variation)
+- Frame rate impact: Minimal (< 5% of budget)
+
+================================================================================
+VARIATION 3: FINE DUST - AMBIENT
+================================================================================
+
+CATEGORY: Atmospheric dust floating in air, background effect
+
+PRIMARY USE CASES:
+- General atmospheric haze
+- Ambient dust floating in air (no specific impact)
+- Environmental mood setting
+- Depth layering (background dust vs foreground action)
+- Indoor dust particles (sunlight through windows)
+
+VISUAL CHARACTERISTICS:
+- Color palette: Light brown/tan dust (#C9AFA0 primary, #B8A090 secondary)
+- Particle appearance: Very fine dust particles, nearly transparent
+- Size distribution: Smallest particles (8px-32px)
+- Texture style: Soft-edged, delicate dust with Gaussian falloff
+
+PHYSICS SPECIFICATIONS:
+
+Spawn Mechanics:
+- Particle count: 15-25 particles per spawn (low density)
+- Spawn pattern: Random positions within spherical volume
+- Spawn region: 200-pixel radius around camera/scene center
+- Spawn height: Full vertical range (top to bottom of screen)
+- Spawn frequency: Continuous low-rate generation (1-2 particles/frame)
+- Lifetime spread: Staggered ages for natural variation
+
+Velocity Profile:
+- Initial velocity: 30-60 pixels/second (very slow movement)
+- Direction: Random XY (omnidirectional drift)
+- Velocity decay: -20% reduction every 0.5 seconds
+- Frame-by-frame velocity:
+  - Frame 0: 45 px/s (average)
+  - Frame 15: 36 px/s (20% decay)
+  - Frame 30: 29 px/s (additional decay)
+  - Frame 60: 24 px/s (minimal velocity)
+
+Physics:
+- Gravity: 12 pixels/second² downward (very light, almost floating)
+- Air resistance: 0.99x damping per frame (1% energy loss)
+- Collision: None (particles pass through all objects)
+- Settling behavior: Particles move so slowly they appear stationary
+
+Rotation Profile:
+- Initial rotation: Random 0-360 degrees
+- Angular velocity: 30-90 degrees per second (very slow rotation)
+- Rotation decay: Minimal, particles may rotate continuously
+- Characteristic: Gentle, imperceptible spinning
+
+Color & Opacity Progression:
+- Frame 0: Color #C9AFA0, Alpha 150 (semi-transparent)
+- Frame 30: Color #C9AFA0, Alpha 125 (slight fade)
+- Frame 60: Color #B8A090, Alpha 100 (dim)
+- Frame 90: Color #B8A090, Alpha 0 (fade-out over 3 seconds)
+
+Scale Progression:
+- Frame 0: 0.6x scale (small initial size)
+- Frame 30: 0.75x scale (gradual growth)
+- Frame 60: 0.9x scale (approaching natural size)
+- Frame 90: 0.8x scale (shrinkage during fade-out)
+- Easing: Very smooth ease-out (almost imperceptible)
+
+Lifetime: 3.0 seconds (90 frames @ 30fps) - longest-lived variation
+
+BLEND MODE & RENDERING:
+- Blend mode: Screen (additive blending)
+- Opacity multiplier: 0.4x (very low opacity for subtle effect)
+- Depth sorting: Strict depth-based rendering
+- Z-depth offset: Random ±50 pixels (wide depth range for atmospheric effect)
+- Render order: Background layer (renders behind all other effects)
+- Mipmap filtering: Trilinear with high-quality filtering
+
+TURBULENCE & ENVIRONMENTAL EFFECTS:
+- X-axis drift: ±20% horizontal drift (more pronounced than other variations)
+- Y-axis drift: +15% downward bias (gravity effect, very subtle)
+- Perlin noise turbulence: 0.3x amplitude, 0.02 frequency (prominent drift)
+- Wind simulation: +1.0 to +3.0 px/frame base wind (more affected by environment)
+- Atmospheric modulation: Opacity responds to scene lighting conditions
+
+CONTINUOUS GENERATION:
+- Generation rate: 1-2 new particles per frame
+- Total particles accumulating: 150-200 particles typical scene
+- Spawn location: Distributed across entire screen volume
+- Age distribution: Particles at various lifetimes (smooth appearance)
+
+MEMORY FOOTPRINT:
+- Per-particle data: 128 bytes
+- Maximum particles: 200 active simultaneously
+- Runtime memory: ~25 KB per active frame
+- Sprite sheet: 512x512 PNG ≈ 512 KB
+- Variation total: 512 KB + 25 KB runtime
+
+PERFORMANCE PROFILE:
+- CPU cost: 0.6ms per frame (low spawn rate)
+- GPU cost: 1.2ms per frame (many particles, but simple rendering)
+- Total frame time: 1.8ms
+- Frame rate impact: Very low (< 12% of budget)
+- Optimization note: GPU-friendly (batching efficiency)
+
+SCENE APPLICATION:
+- Always-on background effect (low performance cost justifies persistence)
+- Opacity controlled per scene (fade in/out with scene transitions)
+- Can be toggled on/off based on platform performance (mobile optimization)
+
+================================================================================
+VARIATION 4: IMPACT DUST - FIGHT/COLLISION
+================================================================================
+
+CATEGORY: Explosive dust burst for combat impacts and collision moments
+
+PRIMARY USE CASES:
+- Punch/kick impacts during fight scenes
+- Character collision with obstacles
+- Combat finishing moves
+- Creature attacks
+- Environmental collisions (hitting structures, debris)
+
+VISUAL CHARACTERISTICS:
+- Color palette: Dark dust (#7A6B5D primary, #5D5047 secondary)
+- Particle appearance: Medium-sized dust with sharp edges
+- Size distribution: Mixed 24px-96px sprites
+- Texture style: Energetic dust with defined particle shapes
+
+PHYSICS SPECIFICATIONS:
+
+Spawn Mechanics:
+- Particle count: 120-180 particles (high-intensity burst)
+- Spawn pattern: Omnidirectional radial burst
+- Spawn region: Impact point (precise location)
+- Spread angle: 60-degree cone around impact normal
+- Spawn timing: Instantaneous 100ms burst window
+- Spatial distribution: Uniform throughout spawn volume
+
+Velocity Profile:
+- Initial velocity: 300-400 pixels/second (very fast!)
+- Direction: Radial outward from impact point + impact normal bias
+- Velocity decay: -60% reduction every 0.2 seconds
+- Frame-by-frame velocity:
+  - Frame 0: 350 px/s (average)
+  - Frame 6: 140 px/s (60% decay - rapid deceleration)
+  - Frame 12: 56 px/s (additional 60%)
+  - Frame 18: 22 px/s (final 60%, barely moving)
+
+Physics:
+- Gravity: 300 pixels/second² downward (strong gravity for fast fall)
+- Air resistance: 0.95x damping per frame (5% energy loss per frame)
+- Collision: Full collision response (particles bounce off surfaces)
+- Bounce behavior: 0.4x velocity retained, direction altered by surface normal
+- Ground settle: Particles come to rest by frame 30 (1.0s)
+
+Rotation Profile:
+- Initial rotation: Random 0-360 degrees
+- Angular velocity: 360-720 degrees per second (rapid spinning!)
+- Rotation decay: Exponential decay to zero by frame 30
+- Characteristic: Intense tumbling, chaotic motion
+
+Color & Opacity Progression:
+- Frame 0: Color #7A6B5D, Alpha 255 (fully opaque)
+- Frame 6: Color #7A6B5D, Alpha 220 (bright impact)
+- Frame 12: Color #5D5047, Alpha 140 (darker, fading)
+- Frame 18: Color #5D5047, Alpha 60 (very dim)
+- Frame 24: Color #5D5047, Alpha 0 (complete fade-out)
+
+Scale Progression:
+- Frame 0: 1.2x scale (large initial particles)
+- Frame 6: 1.0x scale (normalized size)
+- Frame 12: 0.8x scale (shrinking)
+- Frame 18: 0.5x scale (rapid shrinkage)
+- Frame 24: 0.2x scale (nearly invisible during final frames)
+- Easing: Ease-in curve for rapid size decrease
+
+Lifetime: 0.8 seconds (24 frames @ 30fps) - short, intense effect
+
+BLEND MODE & RENDERING:
+- Blend mode: Additive (Screen mode)
+- Opacity multiplier: 1.0x (full strength for impact effect)
+- Depth sorting: Multi-layer (allow depth intersection)
+- Z-depth offset: Large variance ±30 pixels (chaotic depth)
+- Render order: Foreground layer (above most other effects)
+- Mipmap filtering: Trilinear
+
+SPECIAL EFFECTS:
+- Flash effect: Optional white screen flash (50-100ms, 20% opacity)
+- Flash timing: Synchronized with particle spawn (frame 0-3)
+- Particle glow: Additive glow layer underneath main particles
+- Motion blur: Optional motion blur on high-speed particles
+
+TURBULENCE & ENVIRONMENTAL EFFECTS:
+- X-axis drift: ±25% random horizontal variance (chaotic)
+- Y-axis drift: ±15% vertical variance (gravity-influenced)
+- Perlin noise turbulence: 0.5x amplitude, 0.1 frequency (strong turbulence)
+- Wind simulation: +0.5 to +5.0 px/frame wind (can amplify chaos)
+- Impact direction: Dust direction biased by impact angle/normal
+
+SPAWN TRIGGER CONDITIONS:
+- Trigger type: Event-based (instantaneous trigger)
+- Trigger source: Combat/collision system
+- Trigger timing: Synchronized with impact frame
+- Audio sync: Match with impact sound effect (critical!)
+- Multiple impacts: Can spawn multiple times rapidly (combo attacks)
+- Stacking behavior: Natural accumulation of effects
+
+MEMORY FOOTPRINT:
+- Per-particle data: 128 bytes
+- Maximum particles: 180 active simultaneously
+- Runtime memory: ~23 KB per active frame (when spawning)
+- Sprite sheet: 512x512 PNG ≈ 512 KB
+- Variation total: 512 KB + 23 KB runtime
+
+PERFORMANCE PROFILE:
+- CPU cost: 2.0ms per frame (peak burst frame)
+- GPU cost: 1.5ms per frame (intensive rendering)
+- Total frame time: 3.5ms (significant, but manageable)
+- Frame rate impact: ~23% of budget (acceptable for short duration)
+- Optimization: Particle pooling prevents allocation spikes
+
+================================================================================
+VARIATION 5: MAGICAL DUST - FANTASY/SUPERNATURAL
+================================================================================
+
+CATEGORY: Ethereal, glowing dust for magical moments and supernatural events
+
+PRIMARY USE CASES:
+- Magic spell effects
+- Creature appearance/transformation
+- Mystical moments
+- Fantasy environmental effects
+- Supernatural transitions
+
+VISUAL CHARACTERISTICS:
+- Color palette: Gold #FFD700 + Pink #FF6B9D blend (70% gold, 30% pink)
+- Particle appearance: Sparkle-like with subtle glow
+- Size distribution: Mixed 20px-80px with glow halos
+- Texture style: Ethereal, soft-edged, glowing particles
+
+PHYSICS SPECIFICATIONS:
+
+Spawn Mechanics:
+- Particle count: 60-90 particles (moderate quantity)
+- Spawn pattern: Spiral upward starting pattern
+- Spawn region: Character/object center point
+- Spiral parameters: 3-turn spiral over 300ms spawn duration
+- Spawn timing: Gradual 300ms spawn window (not instantaneous)
+- Initial height: Ground level rising upward
+
+Velocity Profile:
+- Initial velocity: 200-280 pixels/second
+- Direction: Upward + outward spiral motion (counter-clockwise typically)
+- Velocity decay: -30% reduction every 0.3 seconds
+- Frame-by-frame velocity:
+  - Frame 0: 240 px/s (average)
+  - Frame 9: 168 px/s (30% decay)
+  - Frame 18: 118 px/s (additional decay)
+  - Frame 27: 82 px/s (final decay phase)
+
+Physics:
+- Gravity: -40 pixels/second² initially (reverse gravity! upward force)
+- Gravity transition: Becomes +20 px/s² downward at frame 30
+- Air resistance: 0.96x damping per frame (4% energy loss)
+- Collision: Non-colliding (magical particles pass through objects)
+- Levitation: Particles "float" for extended period before settling
+
+Rotation Profile:
+- Initial rotation: Random 0-360 degrees
+- Angular velocity: 180-360 degrees per second
+- Rotation decay: Linear to zero by frame 66
+- Characteristic: Graceful spinning, magical feel
+
+Color & Opacity Progression:
+- Frame 0: Color gold/pink blend, Alpha 200 (visible from start)
+- Frame 15: Color gold/pink blend, Alpha 240 (brightness peak)
+- Frame 33: Color gold/pink blend, Alpha 180 (fading)
+- Frame 50: Color gold/pink blend, Alpha 80 (dim)
+- Frame 66: Color gold/pink blend, Alpha 0 (complete fade)
+
+Glow Intensity:
+- Frame 0: 0.2x glow multiplier
+- Frame 15: 1.0x glow multiplier (peak glow)
+- Frame 33: 0.6x glow multiplier (fading glow)
+- Frame 66: 0x glow multiplier (no glow at end)
+
+Scale Progression:
+- Frame 0: 0.9x scale (starting size)
+- Frame 15: 1.2x scale (peak expansion)
+- Frame 30: 1.4x scale (maximum size)
+- Frame 45: 1.2x scale (slight shrinkage)
+- Frame 66: 0.8x scale (shrinking during fade-out)
+- Easing: Ease-out curve for smooth growth, ease-in for shrinkage
+
+Lifetime: 2.2 seconds (66 frames @ 30fps) - longest-lived intensive variation
+
+BLEND MODE & RENDERING:
+- Blend mode: Screen (additive) + Overlay (for glow effect)
+- Opacity multiplier: 1.0x base (adjustable per scene)
+- Depth sorting: Depth-based with Z-variance
+- Z-depth offset: ±20 pixels depth variance
+- Render order: Foreground magical layer
+- Mipmap filtering: Trilinear with high-quality anisotropic filtering
+- Glow shader: Separate bloom/glow pass for magical appearance
+
+SPECIAL EFFECTS:
+- Sparkle enhancement: Tiny bright sparkles emit from particles
+- Sparkle count: 3-5 per main particle
+- Sparkle lifetime: 0.3-0.5 seconds
+- Aura effect: Soft halo around each particle
+- Aura radius: 15-25 pixels
+- Color bleeding: Subtle color halos in surrounding pixels
+
+TURBULENCE & ENVIRONMENTAL EFFECTS:
+- X-axis drift: ±30% horizontal drift (wavy motion)
+- Y-axis drift: ±20% vertical drift (magical float)
+- Perlin noise turbulence: 0.4x amplitude, 0.08 frequency
+- Sine wave modulation: Vertical sine wave (0.5Hz) for wavy motion
+- Wind simulation: +0 px/frame (magical particles unaffected by wind)
+- Magical aura: Particles influenced by scene magical field (if present)
+
+SPAWN TRIGGER CONDITIONS:
+- Trigger type: Event-based (animation frame trigger)
+- Trigger source: Magical event, spell cast, transformation start
+- Trigger timing: Synchronized with animation keyframe
+- Spawn behavior: Single spawn per event (not continuous)
+- Multiple uses: Can trigger multiple times throughout scene
+
+MEMORY FOOTPRINT:
+- Per-particle data: 128 bytes
+- Maximum particles: 90 active simultaneously
+- Runtime memory: ~11.5 KB per active frame
+- Sprite sheet: 512x512 PNG ≈ 512 KB
+- Glow texture: 256x256 PNG ≈ 128 KB (sparkle/glow assets)
+- Variation total: 640 KB + 11.5 KB runtime
+
+PERFORMANCE PROFILE:
+- CPU cost: 1.5ms per frame (spiral calculation overhead)
+- GPU cost: 2.0ms per frame (glow shader, sparkle rendering)
+- Total frame time: 3.5ms (higher than other variations)
+- Frame rate impact: ~23% of budget (acceptable for magical moments)
+- GPU-intensive: Glow/bloom effects require additional GPU passes
+
+SCENE APPLICATION (Example):
+- Scene 5, timestamp 2:55-3:00
+- Trigger: Magical transformation moment
+- Particle count: 75 (mid-range of specification)
+- Duration: Full 2.2 seconds (extended magical effect)
+- Color: 60% gold, 40% pink
+- Optional audio: Magical "ding" or chime sound effect
+
+================================================================================
+PERFORMANCE OPTIMIZATION RECOMMENDATIONS
+================================================================================
+
+MEMORY MANAGEMENT:
+1. Particle pooling: Pre-allocate 300 particle objects per variation
+2. Sprite batching: Combine all particles into 2-4 draw calls per frame
+3. Texture atlasing: Pack all sprites into single 2048x2048 atlas if possible
+4. LOD system: Reduce particle counts by 30% on mobile devices
+
+GPU OPTIMIZATION:
+1. Instanced rendering: Use GPU instancing for identical sprites
+2. Shader optimization: Minimize branching in blend mode calculations
+3. Texture compression: Use BCn/DXT compression for sprite atlases
+4. Early depth culling: Cull particles outside screen viewport
+
+CPU OPTIMIZATION:
+1. Frame-rate independent updates: Use delta time for physics calculations
+2. Spatial partitioning: Organize particles by screen quadrants
+3. Cache-friendly structures: Align particle data for CPU cache efficiency
+4. SIMD vectorization: Process multiple particles in parallel
+
+SCENE-SPECIFIC TUNING:
+- Dust particle count reduction: 70-80% on mobile platforms
+- Fine dust variation: Disable on low-end devices (too many particles)
+- Magical dust: Reduce glow effect quality on performance-constrained devices
+- Memory budget: Allocate 30-40 MB for particle effects on mobile
+
+================================================================================
+ASSET DELIVERY CHECKLIST - DUST VARIATIONS
+================================================================================
+
+[✓] Variation 1: Ground Dust - Heavy Impact (complete specification)
+[✓] Variation 2: Medium Dust - Walk/Run (complete specification)
+[✓] Variation 3: Fine Dust - Ambient (complete specification)
+[✓] Variation 4: Impact Dust - Fight/Collision (complete specification)
+[✓] Variation 5: Magical Dust - Fantasy/Supernatural (complete specification)
+
+REQUIRED SPRITE ASSETS (To be created separately):
+[  ] Ground Dust sprite sheet (512x512 PNG, 16 sprites, #8B7355 color family)
+[  ] Medium Dust sprite sheet (512x512 PNG, 16 sprites, #A0826D color family)
+[  ] Fine Dust sprite sheet (512x512 PNG, 16 sprites, #C9AFA0 color family)
+[  ] Impact Dust sprite sheet (512x512 PNG, 16 sprites, #7A6B5D color family)
+[  ] Magical Dust sprite sheet (512x512 PNG, 16 sprites, gold/pink colors)
+[  ] Sparkle glow texture (256x256 PNG, for Variation 5 enhancement)
+
+TOTAL SPRITE ASSET SIZE: ~2.5 MB (within specification)
+
+STATUS: SPECIFICATION COMPLETE - Ready for sprite asset creation and implementation
+
+================================================================================
+END OF EXPERT 11: DUST PARTICLE EFFECT VARIATIONS
+================================================================================

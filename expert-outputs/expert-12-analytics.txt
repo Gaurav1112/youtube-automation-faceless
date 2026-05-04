@@ -1,0 +1,684 @@
+Agent completed. agent_id: expert-12-analytics, agent_type: research, status: completed, description: Analytics KPI expert, elapsed: 584s, total_turns: 0, duration: 165s
+
+# 🎯 EXPERT 12 OF 16: YouTube Analytics KPI & Iteration Framework
+### Complete Decision System for New Channels (0–1K Subs)
+
+---
+
+## 📊 PART 1: THE 5 DAILY KPIs TO TRACK
+
+> **Rule:** Daily tracking is for *reaction*, not analysis. You're looking for signals that require immediate action within 24–48 hours.
+
+| # | KPI | Where in YT Studio | Why Daily |
+|---|-----|-------------------|-----------|
+| 1 | **Impressions CTR** | Analytics → Reach | First 24–48h predicts algorithm push |
+| 2 | **Average View Duration (AVD)** | Analytics → Engagement | Tells you if the hook is working |
+| 3 | **Average % Viewed (APV)** | Analytics → Engagement | Relative retention across video lengths |
+| 4 | **Subscribers Gained (net)** | Analytics → Audience | Validates content-audience fit |
+| 5 | **Watch Time (hours)** | Analytics → Overview | Raw fuel for algorithm recommendations |
+
+**Daily Check Discipline:** Spend **max 10 minutes**. Check only videos <7 days old. Ignore everything else.
+
+---
+
+## 📅 PART 2: THE 5 WEEKLY KPIs TO TRACK
+
+> **Rule:** Weekly tracking is for *pattern recognition* and *strategic pivots*. Needs at least 7 days of data to be meaningful.
+
+| # | KPI | Why Weekly | Decision Trigger |
+|---|-----|-----------|-----------------|
+| 1 | **Click-Through Rate Trend** (rolling 7d avg) | Smooths daily noise, shows thumbnail fatigue | If declining 3 weeks straight → rotate thumbnails |
+| 2 | **Top Traffic Sources** (Search vs Suggested vs Browse) | Reveals how YT is classifying your content | If Suggested > 40% → you've entered the recommendation engine |
+| 3 | **Audience Retention Curve Shape** | Identifies structural problems (hook, mid-video, outro) | If consistent cliff at same timestamp → fix that segment |
+| 4 | **Impressions → Views Funnel** (Impressions × CTR = Views) | Separates distribution problem from click problem | Low impressions = YT won't test your video; Low CTR = title/thumb fail |
+| 5 | **Return Viewer % vs New Viewer %** | Measures if you're building an audience vs. just getting views | Healthy channel: aim for >20% return viewers by month 3 |
+
+---
+
+## 📏 PART 3: BENCHMARK THRESHOLDS (0–1K SUBS)
+
+### 3.1 Impressions CTR
+
+```
+❌ POOR:     < 2%    → Title/thumbnail has zero magnetism. Immediate redesign.
+⚠️ AVERAGE: 2–4%    → Acceptable for new channel. Iterate incrementally.
+✅ GOOD:     4–7%    → Strong signal. YT will broaden distribution.
+🚀 ELITE:   > 7%    → Viral potential. Double down on this thumbnail/title formula.
+```
+
+> **Context:** Average CTR across ALL of YouTube is 4–5%. New channels with small audiences often see *inflated* early CTR (loyal first subscribers click everything) — this normalizes as impressions scale. Don't celebrate a 10% CTR on 200 impressions.
+
+### 3.2 Average Percentage Viewed (APV)
+
+```
+❌ POOR:     < 30%   → Viewers are bouncing fast. Hook failure or wrong audience.
+⚠️  AVERAGE: 30–45%  → Typical for most YouTube content.
+✅ GOOD:     45–60%  → Strong content quality signal.
+🚀 ELITE:   > 60%   → Algorithm loves you. This is a "keep" format.
+```
+
+> **Length matters:** A 40% APV on a 20-minute video is better than 60% APV on a 4-minute video (raw watch time is higher). The algorithm weights **absolute watch time**, not just percentage.
+
+### 3.3 Average View Duration vs. Video Length Ratio
+
+```
+Video Length  | Minimum AVD Target | Good AVD Target
+─────────────────────────────────────────────────────
+< 5 minutes   |     2:00           |    3:30+
+5–10 minutes  |     3:30           |    5:00+
+10–20 minutes |     5:00           |    7:30+
+20–30 minutes |     7:00           |    12:00+
+30+ minutes   |     10:00          |    18:00+
+```
+
+**Formula:** `AVD ÷ Video Length = Retention Rate`
+- Target: **>40% retention rate** as baseline for new channels
+- Elite: **>55% retention rate** = algorithm promotion candidate
+
+### 3.4 Subs/View Ratio (% of viewers who subscribed)
+
+```
+❌ POOR:     < 0.5%  → 1 sub per 200 views. Content doesn't compel subscription.
+⚠️  AVERAGE: 0.5–2%  → Industry norm. Acceptable.
+✅ GOOD:     2–5%    → Strong brand/personality fit. Viewers want more.
+🚀 ELITE:   > 5%    → Content-audience match is exceptional.
+```
+
+> **Action trigger:** If views are high but sub ratio is <0.5% → you're either not asking for subs, not delivering on the channel promise, or attracting the wrong audience for your niche.
+
+---
+
+## ⏱️ PART 4: THE "FIRST 24 HOURS" DIAGNOSTIC
+
+> This is your most critical window. YouTube uses the first 24–48 hours to decide whether to push the video broadly.
+
+### The 24H Decision Matrix
+
+```
+METRIC          | THRESHOLD          | DECISION
+────────────────────────────────────────────────────────────────────
+CTR             | < 2% at 24h        | → KILL thumbnail immediately
+                |                    |   Upload new thumb, test title variant
+                |                    |   Do NOT delete and reupload the video
+────────────────────────────────────────────────────────────────────
+First 30s       | > 40% drop-off     | → KILL the hook
+Retention Drop  |                    |   Reshoot/re-edit intro
+                |                    |   Consider adding a "cold open" before intro
+────────────────────────────────────────────────────────────────────
+30% mark drop   | > 60% audience     | → Mid-video problem
+                | left by 30% mark   |   You buried the real content
+────────────────────────────────────────────────────────────────────
+CTR             | 2–4%               | → Wait 48–72h before any change
+                |                    |   Needs more impression data
+────────────────────────────────────────────────────────────────────
+CTR             | > 4%               | → Do NOT touch anything
+                |                    |   Let the algorithm run
+```
+
+### Specific Decision Rules — The 24H Flowchart
+
+```
+START: Video posted ✓
+          │
+          ▼
+    Check CTR at 24h
+          │
+    ┌─────┴──────┐
+  < 2%         > 2%
+    │             │
+    ▼             ▼
+Change thumb   Check AVD/APV
+immediately    at 24h mark
+    │             │
+    ▼         ┌───┴────────┐
+  Did CTR    APV < 30%    APV > 30%
+  improve      │             │
+  in 24h?      ▼             ▼
+    │       Fix hook      Monitor for
+    │       (recut        72h more
+  No → Revise  intro)
+  title too
+```
+
+**Critical Rule:** You can change a YouTube thumbnail **unlimited times** without penalty. Title changes are safe too. Never delete and reupload — you lose all watch time history and ranking signals.
+
+**The "Hook Audit" (First 30 Seconds):**
+1. Go to Analytics → Audience Retention
+2. Find the exact second where the biggest drop occurs in the first 30s
+3. Count seconds from start to that drop
+4. That exact moment = what you said/showed that lost them
+5. **Fix rule:** Your hook must answer "Why should I keep watching THIS video NOW" within 15 seconds
+
+---
+
+## 🔍 PART 5: THE 7-DAY POST-MORTEM ANALYSIS
+
+### The 5-Question Post-Mortem Protocol
+
+After 7 days, open YouTube Studio for that video and answer:
+
+```
+QUESTION 1: "Did the audience match?"
+→ Check: Analytics → Audience → Age, Gender, Geo
+→ If your target is 25–34 males but you're getting 45–54 females
+  → Title/thumbnail is attracting wrong audience
+  → Fix: Reposition the title language
+
+QUESTION 2: "Where did they find it?"
+→ Check: Analytics → Reach → Traffic Sources
+→ If 90% is "Channel pages" → only your subs watched it
+  → Algorithm never tested it broadly
+  → Fix: CTR was likely too low to justify broader push
+
+QUESTION 3: "Where did they leave?"
+→ Check: Analytics → Engagement → Audience Retention Graph
+→ Note the THREE biggest drop points
+→ Each drop is a broken promise to the viewer
+→ Fix: That section in next video should not overpromise
+
+QUESTION 4: "What kept them watching?"
+→ Find the PEAKS in the retention graph (above baseline)
+→ Those moments = exactly what your audience wants MORE of
+→ Fix: More of those moments = next video format
+
+QUESTION 5: "Did it convert?"
+→ Check: Subs gained on this video specifically
+→ Low subs despite good views = weak CTA or wrong niche promise
+→ Fix: Add explicit verbal CTA at 70% mark of video
+```
+
+### The Post-Mortem Scoring System
+
+| Score (0-10) | Metric | Calculation |
+|---|---|---|
+| CTR Score | CTR ÷ 0.7 | 7% = 10/10 |
+| Retention Score | APV ÷ 6 | 60% = 10/10 |
+| Conversion Score | Sub ratio ÷ 0.5 | 5% = 10/10 |
+| Distribution Score | Suggested% ÷ 10 | 100% = 10/10 |
+| **Total /40** | Sum all 4 | |
+
+**< 15/40** = Fundamental format problem → change format
+**15–25/40** = Needs iteration → fix the lowest-scoring metric
+**> 25/40** = Working → replicate and scale this format
+
+---
+
+## 🚦 PART 6: PIVOT VS. PERSIST FRAMEWORK
+
+> The hardest decision: when is it time to quit a format/niche?
+
+### The "PERSIST" Signal Set (Keep Posting Same Format)
+
+```
+✅ PERSIST if ALL 3 are true:
+   1. At least ONE video has APV > 40%
+   2. CTR is trending UP over last 5 videos
+   3. You've posted at least 15 videos in this format
+
+The Principle: 15 videos is the MINIMUM dataset for niche validation.
+Most creators quit at video 8. The algorithm needs 15-20 videos
+to understand your channel's pattern.
+```
+
+### The "PIVOT" Signal Set (Change Format/Niche)
+
+```
+❌ PIVOT if ANY 2 of these are true for 15+ consecutive videos:
+   1. CTR consistently < 2% despite multiple thumbnail iterations
+   2. APV consistently < 30% despite multiple hook iterations
+   3. Sub/view ratio < 0.3% (viewers don't want more)
+   4. Watch time is flat or declining month-over-month
+   5. You hate making the content (sustainability signal)
+```
+
+### The Pivot Spectrum (Not Binary)
+
+```
+MICRO-PIVOT (low risk):
+  Same niche + different format
+  Example: Tutorials → Story-based tutorials
+  Test: 5 videos. If no improvement → proceed to mini-pivot.
+
+MINI-PIVOT (medium risk):
+  Adjacent niche + same format
+  Example: Fitness tutorials → Fitness + nutrition tutorials
+  Test: 10 videos.
+
+MACRO-PIVOT (high risk):
+  Different niche + different format
+  Last resort. Restart mental model.
+  Consider: New channel vs. rebranding existing one
+  Rule: If <500 subs, new channel is usually faster.
+```
+
+---
+
+## 📈 PART 7: AUDIENCE RETENTION GRAPH — MASTERCLASS
+
+### Reading the 4 Curve Shapes
+
+```
+SHAPE 1: "The Cliff" 📉
+████████░░░░░░░░░░░░
+  20%↗ then drops 50%+ in first 30s
+  Diagnosis: Hook failed. Viewer felt deceived by title/thumbnail.
+  Fix: Rewrite hook. Deliver on title promise in first 15 seconds.
+
+SHAPE 2: "The Ski Slope" 📉 (gradual)
+████████████░░░░░░░░
+  Steady decline throughout video
+  Diagnosis: No pattern interrupts. Content is predictable.
+  Fix: Add b-roll cuts, story pivots, or "coming up" teases
+       every 90–120 seconds.
+
+SHAPE 3: "The Bathtub" 📉📈
+████░░░░░░░░░░░░████
+  Drop in middle, recovery at end
+  Diagnosis: Middle section is weak/boring.
+  Fix: Move your best content to the middle. Cut the saggy middle.
+
+SHAPE 4: "The Plateau" ▬▬▬▬▬▬
+████████████████░░░░
+  Stays flat then drops at end
+  Diagnosis: GOOD. Viewers are engaged throughout.
+  Fix: Add strong CTA before the drop point (usually at 85-90% mark).
+```
+
+### The "Relative Retention" Secret
+
+In YouTube Studio, the retention graph shows **relative retention** — how your video performs vs. *other YouTube videos of the same length*. A line above the average = you're beating similar-length videos.
+
+**Action:** Always aim to be in the **top 20% of your video length category**, not just above 50%.
+
+### Finding and Fixing Drop Points
+
+```
+Step 1: Open Analytics → Engagement → Audience Retention
+Step 2: Hover over the graph to find the TOP 3 drop points
+Step 3: Note the EXACT timestamp of each drop
+Step 4: Open your video at that timestamp
+Step 5: Ask: "What did I say/show/transition to right before this drop?"
+
+Common culprits:
+  - Sponsor reads → Move to 60-70% mark, not middle
+  - Slow B-roll without narration → Cut or add VO
+  - Topic changes without transition → Add "bridge" sentence
+  - Repeated information → Cut ruthlessly
+  - Music volume spikes → Audio mastering issue
+```
+
+---
+
+## 🔬 PART 8: A/B THUMBNAIL TESTING METHODOLOGY
+
+### YouTube's Free Built-In Test (2024–2026)
+
+YouTube Studio offers **"Test & Compare"** (rolled out to most channels 2023–2024):
+
+```
+Location: YouTube Studio → Content → Select Video → 
+          "Test & Compare" button (if available to your channel)
+
+How it works:
+  - Upload 2–3 thumbnail variants
+  - YouTube splits impressions equally between variants
+  - After 1,000+ impressions per variant: winner declared
+  - Winning metric: Click-through rate (CTR)
+
+Minimum requirements:
+  - Channel needs enough impression volume
+  - Small channels (<1K subs) may not see this feature yet
+```
+
+### Manual A/B Testing Protocol (For Small Channels)
+
+Since the native test requires impression volume, use this manual method:
+
+```
+MANUAL A/B TEST FRAMEWORK:
+──────────────────────────────────────────────────
+Week 1-2: Upload Thumbnail A → Record CTR at Day 7
+Week 3-4: Change to Thumbnail B → Record CTR at Day 7
+Compare: Which CTR was higher? That's your winner.
+
+IMPORTANT: Only change ONE variable at a time:
+  Test 1: Face vs No Face
+  Test 2: Dark background vs Bright background  
+  Test 3: Text overlay vs No text
+  Test 4: Shocked expression vs Neutral expression
+  Test 5: Numbers in title vs No numbers
+
+Document results in your tracking sheet (see Part 10).
+```
+
+### Thumbnail Testing Variables (Priority Order)
+
+```
+HIGHEST IMPACT (test first):
+  1. Face with emotion vs. no face
+  2. Background color (high contrast wins in dark mode)
+  3. Text size and presence
+
+MEDIUM IMPACT:
+  4. Number of elements on thumbnail
+  5. Brand consistency (border, logo placement)
+
+LOWEST IMPACT:
+  6. Filter/saturation level
+  7. Font choice
+```
+
+---
+
+## 🛠️ PART 9: YT STUDIO "INSPIRATION" & "RESEARCH" TABS (2026)
+
+### The "Inspiration" Tab
+
+```
+Location: YouTube Studio → Inspiration (left sidebar)
+
+What it does in 2025–2026:
+  ✅ AI-generated video ideas based on YOUR channel's past performance
+  ✅ Suggests topics where YOUR audience has high interest overlap
+  ✅ Shows "Opportunity score" for each idea (predicted CTR potential)
+  ✅ Generates title variations and thumbnail concepts
+  ✅ Pulls from trending topics in YOUR niche specifically
+  
+Best use: Monday morning ideation session. Generate 20 ideas,
+          score them yourself, pick the top 2 for the week.
+
+Limitation: Ideas are based on YOUR existing data. 
+            New channels get generic suggestions until ~30 videos.
+```
+
+### The "Research" Tab
+
+```
+Location: YouTube Studio → Analytics → Research (or standalone)
+
+What it does in 2025–2026:
+  ✅ Shows what your EXISTING AUDIENCE is searching for on YouTube
+  ✅ Rising search terms in your niche (early trend signals)
+  ✅ Content gaps (high search, low competition)
+  ✅ "Searches with few results" filter — untapped opportunity
+  
+Strategic Value for New Channels:
+  → Focus on "Searches with few results" + your niche keywords
+  → These are your fastest path to ranking since big channels 
+    haven't covered them yet
+    
+Example workflow:
+  1. Type your niche keyword (e.g., "sourdough bread")
+  2. Filter: "Searches with few results on YouTube"
+  3. Find specific long-tail queries your audience is asking
+  4. Make THAT video (not the broad topic — the specific question)
+```
+
+---
+
+## 🔧 PART 10: TubeBuddy & VidIQ FREE TIER ANALYSIS
+
+### TubeBuddy Free Tier Capabilities
+
+```
+FEATURE                    | FREE TIER | BEST USE
+───────────────────────────────────────────────────────
+SEO Score for tags         | ✅ Yes     | Title optimization
+Best time to publish       | ✅ Yes     | Schedule optimization  
+Channel health checker     | ✅ Yes     | Weekly self-audit
+Thumbnail overlay compare  | ✅ Yes     | See how thumb looks in feed
+Tag explorer               | ⚠️ Limited | Basic keyword research
+Competitor tag viewer      | ✅ Yes     | See tags on ANY public video
+A/B thumbnail testing      | ❌ Paid    | Need Pro+ ($9/mo)
+Bulk editing tools         | ❌ Paid    | Not needed at <1K
+```
+
+**Best Free TubeBuddy Workflow:**
+```
+1. Find a competitor video with high views in your niche
+2. Open with TubeBuddy installed → see their exact tags
+3. Copy the best-performing tags to your similar videos
+4. Use "SEO Score" to validate your titles before publishing
+```
+
+### VidIQ Free Tier Capabilities
+
+```
+FEATURE                      | FREE TIER | BEST USE
+─────────────────────────────────────────────────────────
+Video score card              | ✅ Yes     | Audit any video's optimization
+Daily ideas feed              | ✅ Yes     | Topic discovery
+Trend alerts                  | ✅ Yes     | Early mover advantage
+Competitor tracking (1 chan)  | ✅ Yes     | Watch 1 competitor daily
+Views/hour velocity           | ✅ Yes     | See if video is trending
+Keyword inspector             | ⚠️ 3/day   | Use wisely
+Historical data               | ❌ Paid    | Need Basic ($7.50/mo)
+```
+
+**Best Free VidIQ Workflow:**
+```
+1. Add your ONE biggest competitor to free tracking
+2. Get alerted when they post → analyze their title/thumbnail immediately
+3. Use "Views/hour" to identify which of their videos are breaking out
+4. Reverse-engineer their breakout video's structure → create your version
+5. Use your 3 daily keyword searches on their breakout video's topic
+```
+
+### TubeBuddy vs VidIQ: Which to Use?
+
+```
+TubeBuddy free = better for: Tag research, thumbnail comparison, SEO
+VidIQ free = better for: Competitor analysis, trend discovery, daily ideas
+Recommendation: Install BOTH free tiers. Use together. Total cost: $0.
+```
+
+---
+
+## 📋 PART 11: TRACKING SPREADSHEET TEMPLATE
+
+### Google Sheets / Notion Master Template
+
+**Sheet 1: VIDEO TRACKER**
+
+| Column | Field | Notes |
+|--------|-------|-------|
+| A | Video # | Sequential (001, 002...) |
+| B | Title | Full published title |
+| C | Publish Date | YYYY-MM-DD |
+| D | Video Length (min:sec) | |
+| E | Niche/Topic Tag | Consistent taxonomy |
+| F | Format | Tutorial / Story / List / Review / Vlog |
+| G | Thumbnail Style | Face/No-face, Color scheme |
+| H | CTA Type | Sub ask / Comment ask / Link |
+| I | **CTR @ 24h (%)** | 🔴 <2 / 🟡 2-4 / 🟢 >4 |
+| J | **CTR @ 7d (%)** | |
+| K | **CTR @ 30d (%)** | Final benchmark |
+| L | **AVD (min:sec)** | |
+| M | **APV (%)** | 🔴 <30 / 🟡 30-45 / 🟢 >45 |
+| N | **AVD/Length Ratio (%)** | Formula: =L/D |
+| O | **Watch Time (hours)** | |
+| P | **Impressions** | |
+| Q | **Views** | |
+| R | **Subs Gained** | |
+| S | **Sub/View Ratio (%)** | Formula: =R/Q |
+| T | Top Traffic Source | Browse / Search / Suggested / External |
+| U | Retention Shape | Cliff / Ski Slope / Bathtub / Plateau |
+| V | Top Drop Point (timestamp) | |
+| W | Hook Length (seconds) | When do you state the "why watch" |
+| X | Post-Mortem Score (/40) | From framework in Part 5 |
+| Y | Action Taken | Thumb changed / Title changed / None |
+| Z | Learnings/Notes | Free text |
+
+---
+
+**Sheet 2: WEEKLY CHANNEL DASHBOARD**
+
+| Column | Field |
+|--------|-------|
+| A | Week # |
+| B | Date Range |
+| C | Videos Published |
+| D | Total Watch Time (hours) |
+| E | Total Views |
+| F | Total Impressions |
+| G | **Channel Avg CTR (%)** |
+| H | **Channel Avg APV (%)** |
+| I | Net Subs Gained |
+| J | Total Subs (cumulative) |
+| K | Best Performing Video (link) |
+| L | Worst Performing Video (link) |
+| M | Primary Traffic Source This Week |
+| N | New vs Return Viewer % |
+| O | **Format Win This Week** |
+| P | **Format Fail This Week** |
+| Q | Experiment Planned Next Week |
+| R | Morale Score (1-10) |
+
+---
+
+**Sheet 3: THUMBNAIL A/B TEST LOG**
+
+| Column | Field |
+|--------|-------|
+| A | Video # |
+| B | Test Start Date |
+| C | Thumbnail A Description |
+| D | Thumbnail A CTR |
+| E | Thumbnail A Impressions |
+| F | Thumbnail B Description |
+| G | Thumbnail B CTR |
+| H | Thumbnail B Impressions |
+| I | Winner |
+| J | Variable Tested |
+| K | Learning |
+
+---
+
+**Sheet 4: COMPETITOR INTELLIGENCE**
+
+| Column | Field |
+|--------|-------|
+| A | Competitor Channel |
+| B | Their Video Title |
+| C | Video URL |
+| D | Date Posted |
+| E | Views at 7d |
+| F | Views at 30d |
+| G | Their Thumbnail Style |
+| H | Their Hook Style |
+| I | Tags Used (TubeBuddy) |
+| J | Why Did It Perform? |
+| K | My Action |
+
+---
+
+## ✅ PART 12: THE WEEKLY ANALYTICS REVIEW CHECKLIST (1-PAGE)
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║         WEEKLY YOUTUBE ANALYTICS REVIEW CHECKLIST               ║
+║                    (Every Monday — 30 min)                       ║
+╠══════════════════════════════════════════════════════════════════╣
+║                                                                  ║
+║  STEP 1: CHANNEL HEALTH (5 min)                                  ║
+║  □ Check total watch time vs last week (+/- %)                   ║
+║  □ Check net subscribers this week                               ║
+║  □ Check channel CTR trend (up/flat/down?)                       ║
+║  □ Note primary traffic source change                            ║
+║                                                                  ║
+║  STEP 2: NEW VIDEO AUDIT — videos <7 days old (10 min)           ║
+║  □ CTR @ 24h → Log in sheet, flag if <2%                         ║
+║  □ APV → Log in sheet, flag if <30%                              ║
+║  □ AVD/Length ratio → Is it above 40%?                           ║
+║  □ Sub/view ratio → Is it above 0.5%?                            ║
+║  □ Check retention graph shape → Log shape type                  ║
+║  □ Note 3 biggest drop timestamps                                ║
+║  □ Check traffic sources → Is Suggested traffic growing?         ║
+║                                                                  ║
+║  STEP 3: OLD VIDEO WATCH (3 min)                                 ║
+║  □ Check if any video 7–30d old is getting a "second wind"       ║
+║  □ If so: update title/thumbnail to capitalize on the surge      ║
+║  □ Check if any old video's CTR dropped (thumbnail fatigue)      ║
+║                                                                  ║
+║  STEP 4: COMPETITOR PULSE (5 min)                                ║
+║  □ Check 1–2 competitors: what posted this week?                 ║
+║  □ Any breakout video from a competitor? Note why.               ║
+║  □ Log to Competitor Intelligence Sheet                          ║
+║                                                                  ║
+║  STEP 5: DECISIONS & PLANNING (7 min)                            ║
+║  □ Use DECISION TREE below to categorize each video              ║
+║  □ Write 1 learning from this week                               ║
+║  □ Write 1 experiment for next week                              ║
+║  □ Choose next 2 video topics based on Research tab              ║
+║  □ Rate your week: Is the format sustainable?                    ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+---
+
+## 🌳 THE MASTER DECISION TREE
+
+```
+START: New video is 7 days old
+              │
+              ▼
+     Check CTR and APV
+              │
+   ┌──────────┴──────────┐
+CTR < 2%             CTR > 2%
+   │                     │
+   ▼                     ▼
+APV check?         APV < 30%?
+   │                  │      \
+   │                YES      NO
+   ▼                  │       │
+CTR < 2%              ▼       ▼
+AND APV < 30%      Hook     CTR > 4%
+   │               fail:    AND APV > 45%?
+   ▼               fix      │         │
+DOUBLE FAIL:      intro     YES       NO
+Change thumbnail  ──────►   │         │
+AND recutting              ▼         ▼
+the hook.              KEEP      ITERATE:
+Then WAIT 7d.          format    Fix the
+                       !!!       weakest
+                                 metric only
+                                      │
+                                      ▼
+                              After 15 videos:
+                              All scores low?
+                              │            │
+                             YES           NO
+                              │             │
+                              ▼             ▼
+                          PIVOT:         PERSIST:
+                          Micro →        Double down
+                          Mini →         on what works
+                          Macro          Post more
+```
+
+---
+
+## 🏁 QUICK REFERENCE CARD
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│               NUMBERS TO MEMORIZE                           │
+├─────────────────────────────────────────────────────────────┤
+│  CTR: < 2% = problem | > 4% = good | > 7% = great          │
+│  APV: < 30% = problem | > 45% = good | > 60% = great       │
+│  Sub/View: < 0.5% = weak | > 2% = strong                   │
+│  Hook: Must earn continued viewing by second 15             │
+│  Minimum test: 15 videos before any niche pivot             │
+│  First 24h CTR is the most actionable metric you have       │
+│  Peaks in retention = make more of THAT                     │
+│  Drops in retention = broken promise to viewer              │
+│  Never delete & reupload — only change thumb/title          │
+│  Install BOTH TubeBuddy + VidIQ free tiers                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+**Bottom Line Philosophy:** Analytics without action is trivia. Every number you track must map to a specific decision. If a metric doesn't change what you do next, stop tracking it. The creators who win at 0–1K subs aren't the ones who obsess over every data point — they're the ones who pick 3 metrics, act decisively on them, and post consistently enough to generate meaningful data in the first place. **Data is only as powerful as your posting frequency.**

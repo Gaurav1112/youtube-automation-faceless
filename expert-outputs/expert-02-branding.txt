@@ -1,0 +1,385 @@
+Agent completed. agent_id: expert-02-branding, agent_type: research, status: completed, description: Channel branding expert, elapsed: 584s, total_turns: 0, duration: 107s
+
+# 🎬 Complete YouTube Channel Brand Kit
+### Expert 2 of 16 — Channel Branding Specialist Report
+
+---
+
+## 1. 🏷️ 10 Channel Name Ideas (Cross-Niche, All 4 Playlists)
+
+Each name is evaluated against: **Reddit narration · Horror · Motivational · History** — plus handle viability in 2026.
+
+| # | Channel Name | Why It Works | Suggested Handle | Vibe Score |
+|---|---|---|---|---|
+| 1 | **Echoed Minds** | "Echoed" = stories retold; "Minds" = thought-provoking across niches | `@EchoedMinds` | ⭐⭐⭐⭐⭐ |
+| 2 | **The Hollow Hour** | Atmospheric (horror ✅), introspective (motivational ✅), storytelling cadence ✅ | `@TheHollowHour` | ⭐⭐⭐⭐⭐ |
+| 3 | **Unspoken Archive** | "Archive" = history ✅; "Unspoken" = Reddit secrets + horror ✅ | `@UnspokenArchive` | ⭐⭐⭐⭐⭐ |
+| 4 | **Veil & Voice** | Duality — hidden stories + narration; poetic, brandable | `@VeilAndVoice` | ⭐⭐⭐⭐ |
+| 5 | **The Still Frame** | Cinematic, calm, faceless-native (no face = "still frame") | `@TheStillFrame` | ⭐⭐⭐⭐ |
+| 6 | **Dusk Narrates** | Personified brand voice; "Dusk" covers dark + warm tones | `@DuskNarrates` | ⭐⭐⭐⭐⭐ |
+| 7 | **Faded Pages** | History ✅; forgotten Reddit stories ✅; hauntingly nostalgic | `@FadedPages` | ⭐⭐⭐⭐ |
+| 8 | **The Grey Lens** | Neutral, observational — works for all 4 niches | `@TheGreyLens` | ⭐⭐⭐⭐ |
+| 9 | **Obscure Pulse** | "Obscure" = horror/mystery; "Pulse" = motivation/life | `@ObscurePulse` | ⭐⭐⭐⭐ |
+| 10 | **Narrated Dark** | Directional, SEO-friendly for narration channels; bold | `@NarratedDark` | ⭐⭐⭐ |
+
+> 🏆 **Top 3 Picks:** `Echoed Minds`, `The Hollow Hour`, `Unspoken Archive` — all three are short, pronounceable, memorable, and carry emotional weight that transcends any single niche.
+
+---
+
+## 2. 📌 YouTube Handle Convention Recommendations (2026 Format)
+
+### Handle Rules in 2026:
+- Must be **3–30 characters**, letters/numbers/underscores/hyphens only
+- Case-insensitive but **display case matters** for branding
+- Handles are now **primary discovery URLs**: `youtube.com/@YourHandle`
+
+### Best Practice Framework:
+
+```
+TIER 1 — Ideal Handle (≤15 chars, no separators)
+  @EchoedMinds       ✅ Clean, memorable, no ambiguity
+  @TheHollowHour     ✅ Slightly long but cadence is perfect
+
+TIER 2 — Acceptable (with separator for readability)
+  @Unspoken_Archive  ✅ Underscore separates compound words
+  @VeilAndVoice      ✅ "And" reads naturally
+
+TIER 3 — Avoid
+  @echoed.minds      ❌ Dots not allowed on YouTube
+  @EchoedMinds2024   ❌ Year dates your brand instantly
+  @TheRealEchoedMinds ❌ "TheReal" signals you're not first
+```
+
+### Handle SEO Tips (2026):
+- **Match across all platforms**: Same handle on TikTok, Instagram, X — reserve all simultaneously
+- **No underscores if possible** — verbal sharing is cleaner ("at Echoed Minds" vs "at Echoed underscore Minds")
+- **Check handle on**: namecheckr.com before committing
+
+---
+
+## 3. 🎨 Logo Design Guidance
+
+### Design Philosophy for Faceless Channels:
+> *Your logo IS your face. It must carry personality, emotional weight, and be readable at 88×88px (YouTube avatar circle crop).*
+
+### Study of Reference Channels:
+
+| Channel | Logo Strategy | What to Steal |
+|---|---|---|
+| **MagnatesMedia** | Bold serif wordmark + heavy drop shadow; gold/black | Confidence through typography weight |
+| **Kurzgesagt** | Flat illustration icon + custom sans-serif wordmark; always unified | Icon + wordmark lockup; consistent illustration style |
+| **RSlash** | Simple letter mark ("R/") + clean sans-serif | Clever symbol integration (Reddit "R/" becomes the brand) |
+
+### Your Logo System — 3 Components:
+
+#### A. Primary Mark (Icon — use alone for avatar)
+```
+CONCEPT: Abstract "speech wave" or "open eye"
+  — Speech wave = narration across all content
+  — Open eye = "see the unseen" (horror, history, Reddit secrets)
+
+FORM: Single geometric shape, no more than 3 anchor points
+  — Works as: app icon, watermark, favicon, channel avatar
+  — Must READ at 88×88px AND 16×16px
+
+AVOID: Human faces, realistic illustrations, gradients in icon
+```
+
+#### B. Wordmark (Text Logo)
+```
+FONT DIRECTION:
+  Option A — Serif + Weight contrast
+    "ECHOED" [bold slab serif] + "MINDS" [light weight same font]
+    Creates visual tension = memorable
+
+  Option B — Geometric Sans (Futura-style)
+    All caps, tracked wide (+150 letter-spacing)
+    Clean, premium, YouTube-native
+
+  Option C — Custom ligature
+    Connect two letters (E+M for Echoed Minds)
+    Unique, ownable, designer-level with free tools
+
+FONTS (Free/Commercial OK):
+  • Playfair Display Bold (serif, atmospheric)
+  • Space Grotesk (modern, clean)
+  • Cinzel (historical gravitas)
+  • Raleway ExtraBold (motivational energy)
+```
+
+#### C. Lockup Rules
+```
+HORIZONTAL LOCKUP: [Icon] [Wordmark]  — for banners, thumbnails
+STACKED LOCKUP:    [Icon above]       — for avatar, watermark
+                   [Wordmark below]
+ICON ONLY:         [Icon]             — for watermark overlay on videos
+
+CLEAR SPACE RULE: Minimum 1× icon height of white space on all sides
+MINIMUM SIZE: Never use wordmark below 120px wide
+```
+
+### Logo Do's and Don'ts:
+
+| ✅ DO | ❌ DON'T |
+|---|---|
+| Single color + transparent background | Drop shadows on the icon itself |
+| Works in white AND black versions | More than 2 typefaces |
+| Geometric, scalable shapes | Clip art or stock icon libraries |
+| Design for circle crop (YouTube avatar) | Thin strokes under 2px at small sizes |
+| Export as SVG (vector) | Use only PNG (pixelates when scaled) |
+
+---
+
+## 4. 📐 Channel Banner Specs (2026 YouTube)
+
+### Official Dimensions:
+```
+┌─────────────────────────────────────────────┐
+│           FULL CANVAS: 2560 × 1440px        │
+│                                             │
+│  LEFT DEAD ZONE    │  SAFE ZONE  │  RIGHT   │
+│  (TV overscan)     │ 1546 × 423  │  DEAD    │
+│  ~507px each side  │  CENTERED   │  ZONE    │
+│                    │             │          │
+└─────────────────────────────────────────────┘
+
+Safe zone X position: starts at ~507px from left
+Safe zone Y position: starts at ~509px from top
+
+Upload as: JPG or PNG, max 6MB
+```
+
+### Banner Layout Blueprint:
+```
+[SAFE ZONE — 1546×423px — ALL CRITICAL CONTENT HERE]
+┌──────────────────────────────────────────────────┐
+│                                                  │
+│  [LOGO MARK]   [CHANNEL NAME]   [Upload Schedule]│
+│  100×100px     Large Wordmark   "New videos      │
+│                                  Every Tuesday"  │
+│                                                  │
+│  [Tagline: "Stories that stay with you."]        │
+│                                                  │
+└──────────────────────────────────────────────────┘
+
+BACKGROUND (full 2560×1440):
+  • Dark gradient or subtle texture
+  • Keep edges (dead zones) tasteful but non-critical
+  • Consider: dark fog texture, paper grain, subtle geometry
+```
+
+### Device Preview Sizes:
+| Device | Banner Display Size |
+|---|---|
+| Desktop browser | 2560×423px (letterboxed) |
+| Tablet | ~1855×423px |
+| Mobile | ~1546×423px (safe zone only) |
+| TV | Full 2560×1440px |
+
+> ⚡ **Pro tip**: Design in the 1546×423 safe zone FIRST. Then extend the background texture to the full 2560×1440 canvas. Never put text outside the safe zone.
+
+---
+
+## 5. 📝 About-Section Copy Template
+
+*(Under 1,000 characters for above-the-fold; full version below)*
+
+---
+
+**[SHORT VERSION — displays without "Show More"]**
+> *Welcome to [Channel Name] — where stories find their voice. From the depths of Reddit's most jaw-dropping confessions to chilling tales that keep the lights on, we explore every corner of human experience.*
+
+---
+
+**[FULL 3-PARAGRAPH VERSION]**
+
+> **Paragraph 1 — Who You Are (Hook)**
+> *Welcome to [Channel Name]. We believe every story deserves to be heard — whether it's a Reddit thread that kept thousands awake at 3AM, a chapter of history your textbooks skipped, or a true account that will stay with you long after the screen goes dark. This is where those stories live.*
+
+> **Paragraph 2 — What You Do (Value Proposition)**
+> *Every week, we bring you carefully curated narrations across four worlds: the raw and unfiltered world of Reddit, the shadows of horror, the spark of human motivation, and the forgotten corridors of history. No face. No noise. Just stories, told the way they deserve to be.*
+
+> **Paragraph 3 — Call to Action (Community + Subscribe)**
+> *If you've ever lost sleep over a story that felt too real, or found yourself watching "just one more" — you're exactly who this channel is for. Subscribe, turn on notifications, and join a community that believes the best stories are the ones we never saw coming.*
+
+---
+
+**[SEO KEYWORDS TO NATURALLY INCLUDE]**
+`reddit narration` · `scary stories` · `motivational stories` · `history documentary` · `faceless narration` · `true stories` · `bedtime stories adults`
+
+---
+
+## 6. 🎨 Recommended Color Palette
+
+### Design Challenge:
+> Must simultaneously work for **Horror** (dark, tense, unsettling) AND **Motivational** (energizing, warm, uplifting) — without feeling like two different brands.
+
+### Solution: The "Deep Ember" Palette
+
+```
+PRIMARY COLORS (Brand Core):
+┌─────────────────────────────────────────────────────┐
+│  ██████  VOID BLACK     #0D0D0D   — Backgrounds     │
+│  ██████  IRON GREY      #2A2A2A   — Cards, panels   │
+│  ██████  BONE WHITE     #F0EDE8   — Primary text     │
+└─────────────────────────────────────────────────────┘
+
+ACCENT COLORS (Playlist-specific overlays):
+┌─────────────────────────────────────────────────────┐
+│  ██████  EMBER AMBER    #E8942A   — Motivational     │
+│          (warm, fire, energy — thumbnail accents)   │
+│                                                     │
+│  ██████  CRIMSON DUSK   #9B2335   — Horror           │
+│          (blood-adjacent but not cheap — premium)   │
+└─────────────────────────────────────────────────────┘
+```
+
+### How the Palette Functions Per Playlist:
+
+| Playlist | Background | Text | Accent |
+|---|---|---|---|
+| Reddit Narration | `#0D0D0D` | `#F0EDE8` | `#E8942A` |
+| Horror | `#0D0D0D` | `#F0EDE8` | `#9B2335` |
+| Motivational | `#2A2A2A` | `#F0EDE8` | `#E8942A` |
+| History | `#2A2A2A` | `#F0EDE8` | Split: amber + crimson |
+
+### Why This Works:
+- `#0D0D0D + #F0EDE8` = **premium contrast**, not harsh white-on-black
+- `#E8942A` (amber) = universal warmth — fire, candlelight, ancient manuscripts (works for ALL 4 niches)
+- `#9B2335` (crimson) = reserved for Horror only = **Pavlovian thumbnail recognition**
+- The palette is **dark-native** = perfect for YouTube's dark mode (default for most viewers in 2026)
+
+### Color Usage Rules:
+```
+LOGO:        Bone White #F0EDE8 on dark  OR  Void Black #0D0D0D on light
+THUMBNAILS:  Max 2 colors per thumbnail + 1 accent
+BANNER:      Void Black bg + Bone White text + Ember Amber accent
+NEVER:       Neon colors, pure white (#FFFFFF), pure black (#000000)
+```
+
+---
+
+## 7. 🛠️ Free Tools to Build Your Brand Kit
+
+### Logo Creation:
+
+| Tool | Best For | Free Tier Limit | Link |
+|---|---|---|---|
+| **Canva Free** | Quick wordmark + icon combos; export PNG | ✅ Full access; SVG = paid | canva.com |
+| **Photopea** | Photoshop-level browser app; full control | ✅ Unlimited, completely free | photopea.com |
+| **Looka** | AI logo generation; starting point only | ✅ Preview free; download = paid (use as inspiration) | looka.com |
+| **GIMP** | Desktop app; full professional control | ✅ 100% free, no limits | gimp.org |
+| **Vectornator/Linearity** | Vector logo on iPad/Mac | ✅ Free tier available | linearity.io |
+
+### Banner Creation:
+
+| Tool | Why Use It | Time to Banner |
+|---|---|---|
+| **Canva Free** | Has 2560×1440 YouTube banner template pre-built with safe zone guides | 15 min |
+| **Photopea** | Full PSD support; import Canva templates | 20 min |
+| **Adobe Express Free** | Banner templates + brand kit storage | 20 min |
+
+### Font Sources (Free for Commercial Use):
+- **Google Fonts** → fonts.google.com (Playfair Display, Space Grotesk, Cinzel, Raleway)
+- **DaFont** → filter by "100% Free" + "Commercial Use"
+- **Font Squirrel** → 100% commercial-free guaranteed
+
+### Mockup Tools:
+- **Smartmockups Free** — preview logo on phone, t-shirt, mug
+- **Placeit Free tier** — YouTube channel art mockup
+
+---
+
+## 8. 📦 Complete Brand Kit Summary Sheet
+
+*Hand this to a designer or use DIY in Canva — 30 minutes total*
+
+```
+═══════════════════════════════════════════════════
+         [CHANNEL NAME] BRAND KIT v1.0
+═══════════════════════════════════════════════════
+
+CHANNEL NAME:    [Your chosen name, e.g., Echoed Minds]
+YOUTUBE HANDLE:  @[YourHandle]
+TAGLINE:         "Stories that stay with you."
+
+──────────────────────────────────────────────────
+COLORS
+──────────────────────────────────────────────────
+Void Black:      #0D0D0D   (primary background)
+Iron Grey:       #2A2A2A   (secondary background)
+Bone White:      #F0EDE8   (all text)
+Ember Amber:     #E8942A   (motivational/reddit accent)
+Crimson Dusk:    #9B2335   (horror accent only)
+
+──────────────────────────────────────────────────
+TYPOGRAPHY
+──────────────────────────────────────────────────
+Primary Font:    Playfair Display Bold (channel name)
+Secondary Font:  Space Grotesk Regular (body/taglines)
+Thumbnail Font:  Raleway ExtraBold (impact text)
+All fonts:       FREE on Google Fonts
+
+──────────────────────────────────────────────────
+LOGO SPECS
+──────────────────────────────────────────────────
+Format:          SVG (master) + PNG transparent
+Versions:        Light (on dark) + Dark (on light)
+Avatar:          Icon mark only, circle-cropped, 800×800px
+Watermark:       Icon only, 10% opacity white
+
+──────────────────────────────────────────────────
+BANNER
+──────────────────────────────────────────────────
+Canvas:          2560 × 1440px
+Safe Zone:       1546 × 423px (centered)
+File type:       PNG or JPG, max 6MB
+Layout:          Logo left | Name center | Schedule right
+
+──────────────────────────────────────────────────
+THUMBNAIL TEMPLATE SYSTEM
+──────────────────────────────────────────────────
+Reddit:          Dark bg + Amber title + Reddit icon mark
+Horror:          Dark bg + Crimson accent + shadow face/scene
+Motivational:    Grey bg + Amber headline + bold quote
+History:         Dark bg + Amber + vintage texture overlay
+
+──────────────────────────────────────────────────
+VOICE & TONE
+──────────────────────────────────────────────────
+Tone:            Cinematic, calm, atmospheric
+Pace:            Measured — not rushed
+Words to use:    "Untold" "Hidden" "Real" "Dark" "Human"
+Words to avoid:  "Crazy!" "SHOCKING!" "You won't believe"
+                 (these date your brand; let the story speak)
+
+──────────────────────────────────────────────────
+ASSETS CHECKLIST (DIY in Canva)
+──────────────────────────────────────────────────
+□ Channel avatar (800×800px PNG, circle-safe)
+□ Channel banner (2560×1440px PNG)
+□ Thumbnail template × 4 (one per playlist)
+□ End screen template (1920×1080px)
+□ Watermark (transparent PNG, bottom-right)
+□ About section copy (pasted into YouTube Studio)
+□ Channel trailer script outline
+
+═══════════════════════════════════════════════════
+```
+
+---
+
+## 🎯 30-Minute DIY Canva Execution Plan
+
+| Time | Task | Tool |
+|---|---|---|
+| 0–5 min | Choose channel name + secure YouTube handle | YouTube Studio |
+| 5–12 min | Build logo: icon + wordmark in Canva free | Canva |
+| 12–20 min | Design channel banner (use YouTube Banner template) | Canva |
+| 20–25 min | Create 4 thumbnail templates (one per playlist) | Canva |
+| 25–28 min | Paste About section copy into YouTube Studio | YouTube Studio |
+| 28–30 min | Export all assets, upload to channel | Google Drive |
+
+---
+
+> **Final Recommendation:** Go with **`@TheHollowHour`** or **`@EchoedMinds`**. Both names carry weight in all four niches, pass the "say it out loud" test, and will look exceptional as a wordmark in Playfair Display Bold set in Bone White `#F0EDE8` against a Void Black `#0D0D0D` background. The brand feels premium before you've uploaded a single video — and in 2026, that's your competitive moat.
