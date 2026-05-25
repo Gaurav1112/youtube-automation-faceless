@@ -7,6 +7,7 @@ Usage:
     python make_video.py --type reddit --reddit-url <url> --out video.mp4
     python make_video.py --type motivational --theme "discipline" --out video.mp4
     python make_video.py --type history --topic "Roman Empire fall" --out video.mp4
+    python make_video.py --type horror --theme "night shift" --out video.mp4
 
 Format options:
     --shorts        9:16 vertical, max 60s (default)
@@ -21,9 +22,7 @@ Pipeline:
 
 import argparse
 import asyncio
-import json
 import os
-import re
 import shutil
 import subprocess
 import sys
@@ -37,11 +36,11 @@ import edge_tts
 # ---------------------------------------------------------------------------
 
 VOICES = {
-    "narrator_f":  "en-US-AriaNeural",      # warm female (default)
-    "narrator_m":  "en-US-GuyNeural",       # confident male
-    "doc":         "en-US-JennyNeural",     # documentary
-    "deep":        "en-US-DavisNeural",     # deep authoritative
-    "british_f":   "en-GB-SoniaNeural",     # British female
+    "narrator_f":  "en-US-AriaNeural",        # warm female (default)
+    "narrator_m":  "en-US-GuyNeural",         # confident male
+    "doc":         "en-US-JennyNeural",        # documentary
+    "deep":        "en-US-ChristopherNeural",  # deep authoritative (was DavisNeural, removed 2025)
+    "british_f":   "en-GB-SoniaNeural",        # British female
 }
 
 DEFAULT_VOICE = VOICES["narrator_f"]
@@ -62,25 +61,27 @@ def get_reddit_text(url: str) -> str:
     data = r.json()
     post = data[0]["data"]["children"][0]["data"]
     title = post.get("title", "").strip()
-    body  = post.get("selftext", "").strip()
+    body = post.get("selftext", "").strip()
     return f"{title}.\n\n{body}"
 
 
 def gen_script_with_gemini(prompt: str) -> str:
-    """Use Gemini free tier to draft a 200-300 word script."""
+    """Use Gemini to draft a 200-300 word script."""
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         sys.exit("ERROR: set GEMINI_API_KEY env var (https://aistudio.google.com/app/apikey)")
-    import google.generativeai as genai
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.0-flash")
+    import google.genai as genai
+    client = genai.Client(api_key=api_key)
     sys_prompt = (
         "Write a 60-second YouTube script (~150 words). "
         "Hard rules: hook in first sentence (curiosity gap or shock). "
         "Short punchy sentences. No intros like 'Hey guys'. "
         "End with a thought-provoking line. Plain prose only, no stage directions."
     )
-    resp = model.generate_content(f"{sys_prompt}\n\nTOPIC: {prompt}")
+    resp = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=f"{sys_prompt}\n\nTOPIC: {prompt}",
+    )
     return resp.text.strip()
 
 
@@ -98,11 +99,16 @@ def script_for_format(args) -> str:
     if args.type == "history":
         if not args.topic:
             sys.exit("ERROR: --topic required for type=history")
-        return gen_script_with_gemini(f"A surprising historical mini-documentary about: {args.topic}")
+        return gen_script_with_gemini(
+            f"A surprising historical mini-documentary about: {args.topic}"
+        )
     if args.type == "horror":
         if not args.theme:
             sys.exit("ERROR: --theme required for type=horror")
-        return gen_script_with_gemini(f"A short, unsettling true-style horror story about {args.theme}. First-person. Eerie tone.")
+        return gen_script_with_gemini(
+            f"A short, unsettling true-style horror story about {args.theme}. "
+            "First-person. Eerie tone."
+        )
     sys.exit(f"Unknown --type: {args.type}")
 
 
@@ -125,14 +131,15 @@ def tts_to_mp3(text: str, voice: str, out_mp3: Path):
 
 def make_srt(audio_path: Path, srt_path: Path):
     import whisper
-    model = whisper.load_model("base")  # ~140MB; "tiny" is faster but less accurate
+    model = whisper.load_model("base")
     result = model.transcribe(str(audio_path), word_timestamps=True, verbose=False)
 
     def fmt(t: float) -> str:
-        h = int(t // 3600); m = int((t % 3600) // 60); s = t % 60
+        h = int(t // 3600)
+        m = int((t % 3600) // 60)
+        s = t % 60
         return f"{h:02d}:{m:02d}:{s:06.3f}".replace(".", ",")
 
-    # Group words into ~3-word phrases for punchy on-screen captions
     lines = []
     idx = 1
     for seg in result["segments"]:
@@ -141,7 +148,7 @@ def make_srt(audio_path: Path, srt_path: Path):
             lines.append((idx, seg["start"], seg["end"], seg["text"].strip()))
             idx += 1
             continue
-        chunk = []
+        chunk: list = []
         for w in words:
             chunk.append(w)
             if len(chunk) >= 3:
@@ -160,7 +167,7 @@ def make_srt(audio_path: Path, srt_path: Path):
 
 
 # ---------------------------------------------------------------------------
-# Step 4: Compose video with ffmpeg
+# Step 4: Compose video
 # ---------------------------------------------------------------------------
 
 def get_audio_duration(mp3: Path) -> float:
@@ -172,46 +179,15 @@ def get_audio_duration(mp3: Path) -> float:
 
 
 def compose_video(audio: Path, srt: Path, out_mp4: Path, shorts: bool = True):
-    """Compose: animated gradient bg + voiceover + burned subtitles."""
+    """Compose: animated gradient bg + voiceover + Pillow-burned captions."""
+    from pipeline.compose import _compose_gradient, _burn_captions
     duration = get_audio_duration(audio)
-    if shorts:
-        w, h = 1080, 1920
-    else:
-        w, h = 1920, 1080
+    w, h = (1080, 1920) if shorts else (1920, 1080)
 
-    # Subtitle styling: bold, white with black outline, centered, big for Shorts
-    fontsize = 64 if shorts else 36
-    sub_style = (
-        f"FontName=Helvetica,FontSize={fontsize},PrimaryColour=&H00FFFFFF,"
-        f"OutlineColour=&H00000000,BorderStyle=1,Outline=4,Shadow=0,"
-        f"Alignment=2,MarginV={int(h*0.15)},Bold=1"
-    )
-
-    # Animated gradient background as an lavfi source input (no inputs of its own).
-    bg_lavfi = (
-        f"gradients=size={w}x{h}:duration={duration}:speed=0.05:"
-        f"c0=0x1a1a2e:c1=0x16213e:c2=0x0f3460:c3=0xe94560:n=3"
-    )
-
-    # Escape srt path for filter (commas/colons would break it; tempdirs are usually safe but be careful).
-    srt_escaped = str(srt).replace(":", r"\:").replace(",", r"\,")
-
-    filter_complex = (
-        f"[0:v]format=yuv420p,subtitles={srt_escaped}:force_style='{sub_style}'[v]"
-    )
-
-    cmd = [
-        "ffmpeg", "-y",
-        "-f", "lavfi", "-i", bg_lavfi,
-        "-i", str(audio),
-        "-filter_complex", filter_complex,
-        "-map", "[v]", "-map", "1:a",
-        "-c:v", "libx264", "-preset", "fast", "-crf", "20", "-pix_fmt", "yuv420p",
-        "-c:a", "aac", "-b:a", "192k",
-        "-shortest",
-        str(out_mp4),
-    ]
-    subprocess.run(cmd, check=True)
+    base = out_mp4.with_suffix(".base.mp4")
+    _compose_gradient(audio, base, w, h, duration)
+    _burn_captions(base, srt, out_mp4, w, h)
+    base.unlink(missing_ok=True)
 
 
 # ---------------------------------------------------------------------------
@@ -220,19 +196,25 @@ def compose_video(audio: Path, srt: Path, out_mp4: Path, shorts: bool = True):
 
 def main():
     p = argparse.ArgumentParser(description="Generate a minimalist YouTube video.")
-    p.add_argument("--type", required=True, choices=["reddit", "motivational", "history", "horror"])
-    p.add_argument("--text", help="Use this text directly as the script (skips content source).")
+    p.add_argument("--type", required=True,
+                   choices=["reddit", "motivational", "history", "horror"])
+    p.add_argument("--text",
+                   help="Use this text directly as the script (skips content source).")
     p.add_argument("--reddit-url", help="Reddit post URL (for --type reddit).")
     p.add_argument("--theme", help="Theme/keyword (for motivational/horror).")
     p.add_argument("--topic", help="Topic (for history).")
     p.add_argument("--voice", default=DEFAULT_VOICE, help="edge-tts voice name.")
     p.add_argument("--out", default="output.mp4", help="Output MP4 path.")
-    p.add_argument("--longform", action="store_true", help="Horizontal 16:9 instead of vertical Shorts.")
-    p.add_argument("--keep-temp", action="store_true", help="Don't delete intermediate files.")
+    p.add_argument("--longform", action="store_true",
+                   help="Horizontal 16:9 instead of vertical Shorts.")
+    p.add_argument("--keep-temp", action="store_true",
+                   help="Don't delete intermediate files.")
     args = p.parse_args()
 
+    from dotenv import load_dotenv
+    load_dotenv()
+
     workdir = Path(tempfile.mkdtemp(prefix="ytvid-"))
-    print(f"[1/4] Working dir: {workdir}")
 
     print("[1/4] Building script...")
     script_text = script_for_format(args)
@@ -253,7 +235,7 @@ def main():
     print("[4/4] Composing video with ffmpeg...")
     out = Path(args.out).resolve()
     compose_video(audio, srt, out, shorts=not args.longform)
-    print(f"\n✅ Done: {out}")
+    print(f"\nDone: {out}")
     print(f"   Size: {out.stat().st_size / 1024 / 1024:.1f} MB")
 
     if not args.keep_temp:
