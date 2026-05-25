@@ -41,7 +41,14 @@ cp .env.example .env
 ### 4. Run Pipeline
 
 ```bash
-python make_video.py --format reddit --content-type aita --output video_output.mp4
+# Generate a horror Short (45-55 seconds, uploads to YouTube)
+python run.py --shorts
+
+# Generate only, no upload
+python run.py --shorts --no-upload
+
+# Long-form horror video
+python run.py
 ```
 
 **That's it.** Your first video is ready to upload.
@@ -277,7 +284,7 @@ MIT License — see LICENSE file.
 
 1. **Read:** [MONETIZATION_LAUNCH_PLAN_10_10.md](./MONETIZATION_LAUNCH_PLAN_10_10.md) (15 min)
 2. **Setup:** Follow Quick Start above (15 min)
-3. **Create first video:** `python make_video.py --format reddit --content-type aita` (45 min)
+3. **Create first video:** `python run.py --shorts --no-upload` (45 min)
 4. **Upload & optimize:** Track CTR/AWT for first week
 5. **Scale:** Aim for 3 videos/week by month 2
 

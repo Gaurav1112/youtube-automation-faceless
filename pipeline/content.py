@@ -122,6 +122,19 @@ def gen_horror_script(topic: str | None = None, shorts: bool = False) -> dict:
     resp = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
     script = resp.text.strip()
 
+    # Hard cap for Shorts: Gemini sometimes overshoots; truncate at sentence boundary
+    # to stay under 60 seconds (~170 words at -5% rate).
+    if shorts:
+        words = script.split()
+        if len(words) > 170:
+            # Walk backward from word 170 to find a sentence boundary
+            truncated = " ".join(words[:170])
+            last_stop = max(
+                truncated.rfind("."), truncated.rfind("!"), truncated.rfind("?")
+            )
+            if last_stop > 100:
+                script = truncated[:last_stop + 1].strip()
+
     # Extract first sentence as hook
     hook = re.split(r'(?<=[.!?])\s', script)[0]
 
